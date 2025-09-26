@@ -42,10 +42,10 @@ u(n) = u(n-1) + K_0 e(n) + K_1 e(n-1)
 $$
 Digital PI controller implemented for Poll and Pitch rate,
 $$
-U_{RollRate}(n) = V_{RollRate}(n-1) + K_0 e(n) + K_1 e(n-1)
+U_{RollRate}(n) = V_{RollRate}(n-1) + K_0{RollRate} e(n) + K_1{RollRate} e(n-1)
 $$
 $$
-U_{PitchRate}(n) = V_{PitchRate}(n-1) + K_0 e(n) + K_1 e(n-1)
+U_{PitchRate}(n) = V_{PitchRate}(n-1) + K_0{PitchRate} e(n) + K_1{PitchRate} e(n-1)
 $$
 ### Parameters:
 
