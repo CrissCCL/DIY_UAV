@@ -32,6 +32,30 @@ During development, the signal-to-noise ratio (S/N) of measurements was improved
 - **Pitch & Roll** → Angular position control (stabilization)
 - **Yaw** → Angular velocity control (rotation rate)
 
+## 📐 Digital PID Control
+
+The Module uses a discrete PI controller implemented on a Arduino microcontroller.  
+The control law in the digital domain is expressed as:
+
+$$
+u(n) = u(n-1) + K_0 e(n) + K_1 e(n-1)
+$$
+Digital PI controller implemented for Poll and Pitch rate,
+$$
+U_{RollRate}(n) = V_{RollRate}(n-1) + K_0 e(n) + K_1 e(n-1)
+U_{PitchRate}(n) = V_{PitchRate}(n-1) + K_0 e(n) + K_1 e(n-1)
+$$
+### Parameters:
+
+$$
+K_0 = K_p + \frac{K_p}{2T_i} T_s
+$$
+
+$$
+K_1 = -K_p + \frac{K_p}{2T_i} T_s
+$$
+
+
 ## 🖼️ 3D PCB Render Version 4
 <p align="center">
 <img src="docs/control_dron_v4.jpg" alt="PCB Render" width="500">
