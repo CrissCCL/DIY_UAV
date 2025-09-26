@@ -13,7 +13,7 @@ During development, the signal-to-noise ratio (S/N) of measurements was improved
 
 ## 🔄 Control Loops
 <p align="center">
-<img src="docs/control_loop_uav.png" alt="UAV Control Loop" width="500">
+<img src="docs/diagrama uav.png" alt="UAV Control Loop" width="500">
 </p>
 
 ### Controlled Variables
@@ -22,10 +22,13 @@ During development, the signal-to-noise ratio (S/N) of measurements was improved
 
 ## 🖼️ UAV Prototype
 <p align="center">
-<img src="docs/uav_prototype.jpg" alt="UAV Prototype" width="400">
+<img src="docs/dron1.jpg" alt="UAV Prototype" width="400">
 </p>
 <p align="center">
-<img src="docs/uav_setup.jpg" alt="UAV Setup" width="400">
+<img src="docs/pcb5.jpg" alt="UAV Prototype PCB ensambled" width="400">
+</p>
+<p align="center">
+<img src="docs/dron5.jpg" alt="UAV Setup" width="400">
 </p>
 
 ## 📜 License
