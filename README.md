@@ -22,7 +22,7 @@ During development, the signal-to-noise ratio (S/N) of measurements was improved
 
 ## 🖼️ UAV Prototype
 <p align="center">
-<img src="docs/dron1.jpg" alt="UAV Prototype" width="400">
+<img src="docs/dron1.jpeg" alt="UAV Prototype" width="400">
 </p>
 <p align="center">
 <img src="docs/pcb5.jpg" alt="UAV Prototype PCB ensambled" width="400">
