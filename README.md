@@ -44,9 +44,11 @@ During development, the signal-to-noise ratio (S/N) of measurements was improved
 </p>
 
 ## 🌐 YouTube
-📺 [Short Video 1]([[https://youtube.com/playlist?list=PLy6JmHc8bVqIY5rbHkpyFbhlm4xQOCF1T&si=1QBgLZTLAjbxRnrU](https://youtube.com/shorts/dZo7ZcapqBg?feature=share](https://youtube.com/shorts/LwX8zSV23eY?feature=share)
-📺 [Short Video 2]([https://youtube.com/playlist?list=PLy6JmHc8bVqIY5rbHkpyFbhlm4xQOCF1T&si=1QBgLZTLAjbxRnrU](https://youtube.com/shorts/dZo7ZcapqBg?feature=share)
-📺 [Short Video 3]([https://youtube.com/playlist?list=PLy6JmHc8bVqIY5rbHkpyFbhlm4xQOCF1T&si=1QBgLZTLAjbxRnrU](https://youtube.com/shorts/dZo7ZcapqBg?feature=share](https://youtube.com/shorts/Z043N4uVOiI?feature=share)
+📺 [Short Video 1](https://youtube.com/shorts/LwX8zSV23eY?feature=share)
+
+📺 [Short Video 2](https://youtube.com/shorts/dZo7ZcapqBg?feature=share)
+
+📺 [Short Video 3](https://youtube.com/shorts/Z043N4uVOiI?feature=share)
 
 ## 📜 License
 MIT License
