@@ -9,8 +9,6 @@ During development, the signal-to-noise ratio (S/N) of measurements was improved
 > ⚠️ **Note:** This project is currently under development. Features and hardware are subject to change.
 
 ## 📂 Contents
-- `/Hardware` → schematics, PCB layouts, and component lists.
-- `/control_uav` → C/C++ code implementing PID control for angular stabilization.
 - `/docs` → photos, setup diagrams, and videos.
 
 ## 🔄 Control Loops
