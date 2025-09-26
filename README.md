@@ -34,7 +34,7 @@ During development, the signal-to-noise ratio (S/N) of measurements was improved
 
 ## 🖼️ 3D PCB Render Version 4
 <p align="center">
-<img src="docs/control_dron_v4.png" alt="PCB Render" width="500">
+<img src="docs/control_dron_v4.jpg" alt="PCB Render" width="500">
 </p>
 
 ## 🖼️ UAV Prototype
