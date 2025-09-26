@@ -21,7 +21,7 @@ During development, the signal-to-noise ratio (S/N) of measurements was improved
 
 
 ## 📂 Contents
-- `/docs` → photos and setup diagramss.
+- `/docs` → photos and setup diagrams.
 
 ## 🔄 Control Loops
 <p align="center">
