@@ -8,8 +8,20 @@ During development, the signal-to-noise ratio (S/N) of measurements was improved
 
 > ⚠️ **Note:** This project is currently under development. Features and hardware are subject to change.
 
+## 📊 Project Status
+| Component                  | Status                     |
+|-----------------------------|----------------------------|
+| Brushless Motors Setup      | ✅ Completed               |
+| Sensor Signal Calibration   | ✅ Completed               |
+| Teensy PID Control Loop     | ⚙️ In Progress             |
+| Pitch & Roll Stabilization  | ⚙️ In Progress             |
+| Yaw Angular Velocity Control| ⚙️ In Progress             |
+| Model Development          | ⚙️ In Progress               |
+| Prototype Flight Testing    | ⚠️ Not Started             |
+
+
 ## 📂 Contents
-- `/docs` → photos, setup diagrams, and videos.
+- `/docs` → photos and setup diagramss.
 
 ## 🔄 Control Loops
 <p align="center">
@@ -30,6 +42,11 @@ During development, the signal-to-noise ratio (S/N) of measurements was improved
 <p align="center">
 <img src="docs/dron5.jpg" alt="UAV Setup" width="400">
 </p>
+
+## 🌐 YouTube
+📺 [Short Video 1]([[https://youtube.com/playlist?list=PLy6JmHc8bVqIY5rbHkpyFbhlm4xQOCF1T&si=1QBgLZTLAjbxRnrU](https://youtube.com/shorts/dZo7ZcapqBg?feature=share](https://youtube.com/shorts/LwX8zSV23eY?feature=share)
+📺 [Short Video 2]([https://youtube.com/playlist?list=PLy6JmHc8bVqIY5rbHkpyFbhlm4xQOCF1T&si=1QBgLZTLAjbxRnrU](https://youtube.com/shorts/dZo7ZcapqBg?feature=share)
+📺 [Short Video 3]([https://youtube.com/playlist?list=PLy6JmHc8bVqIY5rbHkpyFbhlm4xQOCF1T&si=1QBgLZTLAjbxRnrU](https://youtube.com/shorts/dZo7ZcapqBg?feature=share](https://youtube.com/shorts/Z043N4uVOiI?feature=share)
 
 ## 📜 License
 MIT License
