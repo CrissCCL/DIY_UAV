@@ -1,4 +1,4 @@
-# 🚁 DIY UAV with PID Control ⚠️ *Work in Progress*
+# 🚁 UAV with PID Control ⚠️ *Work in Progress*
 
 ## 📖 Overview
 This DIY UAV (Unmanned Aerial Vehicle) project is being developed with an automatic control loop using PID controllers.  
@@ -30,7 +30,7 @@ During development, the signal-to-noise ratio (S/N) of measurements was improved
 
 ### Controlled Variables
 - **Pitch & Roll** → Angular position control (stabilization)
-- **Yaw** → Angular velocity control (rotation rate)
+- **Pitch, Roll & Yaw** → Angular velocity control (rotation rate)
 
 ## 📐 Digital PID Control
 
@@ -46,6 +46,9 @@ u_{RollRate}(n) = u_{RollRate}(n-1) + K_0 e(n) + K_1 e(n-1)
 $$
 $$
 u_{PitchRate}(n) = u_{PitchRate}(n-1) + K_0 e(n) + K_1 e(n-1)
+$$
+$$
+u_{YawRate}(n) = u_{YawRate}(n-1) + K_0 e(n) + K_1 e(n-1)
 $$
 ### Parameters:
 
