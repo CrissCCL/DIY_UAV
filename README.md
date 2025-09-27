@@ -41,8 +41,8 @@ During development, the signal-to-noise ratio (S/N) of measurements was improved
 
 ## 📐 Digital PID Control
 
-The Module uses a discrete PI controller implemented on a Arduino microcontroller.  
-The control law in the digital domain is expressed as:
+The Module uses a discrete PI and P controller implemented on a Arduino microcontroller.  
+The control law for a PI controller in the digital domain is expressed as:
 
 $$
 u(n) = u(n-1) + K_0 e(n) + K_1 e(n-1)
@@ -58,7 +58,7 @@ $$
 u_{YawRate}(n) = u_{YawRate}(n-1) + K_0 e(n) + K_1 e(n-1)
 $$
 
-### Control Signal inner loop:
+### Control Signal Inner Loop:
 $$
 motor_1=u_{PWR}-u_{RollRate}-u_{PitchRate}-u_{YawRate}
 $$
