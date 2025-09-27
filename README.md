@@ -52,10 +52,10 @@ $$
 error_{posPitch}=Ref_{Pitch}-Angle_{Pitch}
 $$
 $$
-Ref_{rateRoll}=K_{Roll} error_{posRoll};
+Ref_{rateRoll}=K_{Roll} error_{posRoll}
 $$
 $$
-error_{posPitch}=K_{Pitch} error_{posPitch};
+error_{posPitch}=K_{Pitch} error_{posPitch}
 $$
 
 
