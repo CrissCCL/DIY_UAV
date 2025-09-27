@@ -75,13 +75,13 @@ $$
 Digital PI controller in inner loop is implemented for Roll, Pitch and Yaw rates,
 
 $$
-error_{RateRoll}=Ref_{rateRoll}-RateRoll
+error_{RateRoll}=Ref_{rateRoll}-Rate_{Roll}
 $$
 $$
-error_{RatePitch}=Ref_{ratePitch}-RatePitch
+error_{RatePitch}=Ref_{ratePitch}-Rate_{Pitch}
 $$
 $$
-error_{RateYaw}=Ref_{rateYaw}-RateYaw
+error_{RateYaw}=Ref_{rateYaw}-Rate_{Yaw}
 $$
 
 $$
