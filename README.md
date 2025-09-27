@@ -23,6 +23,13 @@ During development, the signal-to-noise ratio (S/N) of measurements was improved
 ## 📂 Contents
 - `/docs` → photos and setup diagrams.
 
+## 🌐 YouTube
+📺 [Short Video 1](https://youtube.com/shorts/LwX8zSV23eY?feature=share)
+
+📺 [Short Video 2](https://youtube.com/shorts/dZo7ZcapqBg?feature=share)
+
+📺 [Short Video 3](https://youtube.com/shorts/Z043N4uVOiI?feature=share)
+
 ## 🔄 Control Loops
 <p align="center">
 <img src="docs/diagrama uav.png" alt="UAV Control Loop" width="500">
@@ -79,13 +86,6 @@ $$
 <p align="center">
 <img src="docs/dron5.jpg" alt="UAV Setup" width="400">
 </p>
-
-## 🌐 YouTube
-📺 [Short Video 1](https://youtube.com/shorts/LwX8zSV23eY?feature=share)
-
-📺 [Short Video 2](https://youtube.com/shorts/dZo7ZcapqBg?feature=share)
-
-📺 [Short Video 3](https://youtube.com/shorts/Z043N4uVOiI?feature=share)
 
 ## 📜 License
 MIT License
