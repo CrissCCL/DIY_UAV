@@ -43,6 +43,7 @@ During development, the signal-to-noise ratio (S/N) of measurements was improved
 
 The Module uses a discrete PI and P controller implemented on a Teensy microcontroller.  
 
+### P controller:
 Digital P controller in outer loop is implemented for Roll and Pitch angles,
 
 $$
@@ -59,11 +60,12 @@ error_{posPitch}=K_{Pitch} \cdot error_{posPitch}
 $$
 
 
-### Parameters P Controller:
+#### Parameters P Controller:
 
-The parameters are adjusted for each of the angles, $$K_{Roll}$$ and $$K_{Pitch}$$
+The parameters are adjusted for each of the angles, $$K_{Roll}$$ and $$K_{Pitch}$$.
 
 
+### PI controller:
 The control law for a PI controller in the digital domain is expressed as:
 
 $$
@@ -92,7 +94,7 @@ $$
 u_{YawRate}(n) = u_{YawRate}(n-1) + K_0 \cdot error_{RateYaw}(n) + K_1 \cdot error_{RateYaw}(n-1)
 $$
 
-### Parameters PI controller:
+#### Parameters PI controller:
 
 The parameters are adjusted for each of the angular rates,
 
@@ -104,7 +106,7 @@ $$
 K_1 = -K_p + \frac{K_p}{2T_i} T_s
 $$
 
-### Control Signal Inner Loop:
+#### Control Signal Inner Loop:
 
 $$
 motor_1=u_{PWR}-u_{RollRate}-u_{PitchRate}-u_{YawRate}
