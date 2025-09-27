@@ -53,7 +53,7 @@ $$
 error_{posPitch}=Ref_{Pitch}-Angle_{Pitch}
 $$
 $$
-Ref_{rateRoll}=K_{Roll} \cdot error_{posRoll}
+error_{rateRoll}=K_{Roll} \cdot error_{posRoll}
 $$
 $$
 error_{posPitch}=K_{Pitch} \cdot error_{posPitch}
