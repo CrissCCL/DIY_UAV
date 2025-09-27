@@ -14,8 +14,8 @@ During development, the signal-to-noise ratio (S/N) of measurements was improved
 | Brushless Motors Setup      | ✅ Completed               |
 | Sensor Signal Calibration   | ✅ Completed               |
 | Teensy PID Control Loop     | ⚙️ In Progress             |
+| Pitch, Roll & Yaw Angular Velocity Control| ⚙️ In Progress             |
 | Pitch & Roll Stabilization  | ⚙️ In Progress             |
-| Yaw Angular Velocity Control| ⚙️ In Progress             |
 | Model Development          | ⚙️ In Progress               |
 | Prototype Flight Testing    | ⚠️ Not Started             |
 
