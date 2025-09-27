@@ -47,7 +47,9 @@ The control law for a PI controller in the digital domain is expressed as:
 $$
 u(n) = u(n-1) + K_0 e(n) + K_1 e(n-1)
 $$
+
 Digital PI controller in inner loop is implemented for Roll, Pitch and Yaw rates,
+
 $$
 u_{RollRate}(n) = u_{RollRate}(n-1) + K_0 e(n) + K_1 e(n-1)
 $$
@@ -56,6 +58,18 @@ u_{PitchRate}(n) = u_{PitchRate}(n-1) + K_0 e(n) + K_1 e(n-1)
 $$
 $$
 u_{YawRate}(n) = u_{YawRate}(n-1) + K_0 e(n) + K_1 e(n-1)
+$$
+
+### Parameters:
+
+The parameters are adjusted for each of the angular rates,
+
+$$
+K_0 = K_p + \frac{K_p}{2T_i} T_s
+$$
+
+$$
+K_1 = -K_p + \frac{K_p}{2T_i} T_s
 $$
 
 ### Control Signal Inner Loop:
@@ -72,18 +86,6 @@ $$
 $$
 motor_4=u_{PWR}+u_{RollRate}-u_{PitchRate}+u_{YawRate}
 $$
-### Parameters:
-
-The parameters are adjusted for each of the angular rates,
-
-$$
-K_0 = K_p + \frac{K_p}{2T_i} T_s
-$$
-
-$$
-K_1 = -K_p + \frac{K_p}{2T_i} T_s
-$$
-
 
 ## 🖼️ 3D PCB Render Version 4
 <p align="center">
