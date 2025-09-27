@@ -47,7 +47,7 @@ The control law in the digital domain is expressed as:
 $$
 u(n) = u(n-1) + K_0 e(n) + K_1 e(n-1)
 $$
-Digital PI controller implemented for Poll and Pitch rate,
+Digital PI controller implemented for Roll, Pitch and Yaw rates,
 $$
 u_{RollRate}(n) = u_{RollRate}(n-1) + K_0 e(n) + K_1 e(n-1)
 $$
