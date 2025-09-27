@@ -59,6 +59,7 @@ u_{YawRate}(n) = u_{YawRate}(n-1) + K_0 e(n) + K_1 e(n-1)
 $$
 
 ### Control Signal Inner Loop:
+
 $$
 motor_1=u_{PWR}-u_{RollRate}-u_{PitchRate}-u_{YawRate}
 $$
