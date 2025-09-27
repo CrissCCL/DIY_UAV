@@ -55,21 +55,14 @@ $$
 Ref_{rateRoll}=K_{Roll} \cdot error_{posRoll}
 $$
 $$
-error_{posPitch}=K_{Pitch} error_{posPitch}
+error_{posPitch}=K_{Pitch} \cdot error_{posPitch}
 $$
 
 
 ### Parameters P Controller:
 
-The parameters are adjusted for each of the angles,
+The parameters are adjusted for each of the angles, $$K_{Roll}$$ and $$K_{Pitch}$$
 
-$$
-K_{Roll}
-$$
-
-$$
-K_{Pitch}
-$$
 
 The control law for a PI controller in the digital domain is expressed as:
 
@@ -90,13 +83,13 @@ error_{RateYaw}=Ref_{rateYaw}-RateYaw
 $$
 
 $$
-u_{RollRate}(n) = u_{RollRate}(n-1) + K_0 error_{RateRoll}(n) + K_1 error_{RateRoll}(n-1)
+u_{RollRate}(n) = u_{RollRate}(n-1) + K_0 \cdot error_{RateRoll}(n) + K_1 \cdot error_{RateRoll}(n-1)
 $$
 $$
-u_{PitchRate}(n) = u_{PitchRate}(n-1) + K_0 error_{RatePitch}(n) + K_1 error_{RatePitch}(n-1)
+u_{PitchRate}(n) = u_{PitchRate}(n-1) + K_0 \cdot error_{RatePitch}(n) + K_1 \cdot error_{RatePitch}(n-1)
 $$
 $$
-u_{YawRate}(n) = u_{YawRate}(n-1) + K_0 error_{RateYaw}(n) + K_1 error_{RateYaw}(n-1)
+u_{YawRate}(n) = u_{YawRate}(n-1) + K_0 \cdot error_{RateYaw}(n) + K_1 \cdot error_{RateYaw}(n-1)
 $$
 
 ### Parameters PI controller:
