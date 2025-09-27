@@ -41,7 +41,7 @@ During development, the signal-to-noise ratio (S/N) of measurements was improved
 
 ## 📐 Digital PID Control
 
-The Module uses a discrete PI and P controller implemented on a Arduino microcontroller.  
+The Module uses a discrete PI and P controller implemented on a Teensy microcontroller.  
 
 Digital P controller in outer loop is implemented for Roll and Pitch angles,
 
@@ -52,7 +52,7 @@ $$
 error_{posPitch}=Ref_{Pitch}-Angle_{Pitch}
 $$
 $$
-Ref_{rateRoll}=K_{Roll} error_{posRoll}
+Ref_{rateRoll}=K_{Roll} \cdot error_{posRoll}
 $$
 $$
 error_{posPitch}=K_{Pitch} error_{posPitch}
