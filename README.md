@@ -42,6 +42,35 @@ During development, the signal-to-noise ratio (S/N) of measurements was improved
 ## 📐 Digital PID Control
 
 The Module uses a discrete PI and P controller implemented on a Arduino microcontroller.  
+
+Digital P controller in outer loop is implemented for Roll and Pitch angles,
+
+$$
+error_{posRoll}=Ref_{Roll}-Angle_{Roll}
+$$
+$$
+error_{posPitch}=Ref_{Pitch}-Angle_{Pitch}
+$$
+$$
+Ref_{rateRoll}=K_{Roll} error_{posRoll};
+$$
+$$
+error_{posPitch}=K_{Pitch} error_{posPitch};
+$$
+
+
+### Parameters P Controller:
+
+The parameters are adjusted for each of the angles,
+
+$$
+K_{Roll}
+$$
+
+$$
+K_{Pitch}
+$$
+
 The control law for a PI controller in the digital domain is expressed as:
 
 $$
@@ -51,16 +80,26 @@ $$
 Digital PI controller in inner loop is implemented for Roll, Pitch and Yaw rates,
 
 $$
-u_{RollRate}(n) = u_{RollRate}(n-1) + K_0 e(n) + K_1 e(n-1)
+error_{RateRoll}=Ref_{rateRoll}-RateRoll
 $$
 $$
-u_{PitchRate}(n) = u_{PitchRate}(n-1) + K_0 e(n) + K_1 e(n-1)
+error_{RatePitch}=Ref_{ratePitch}-RatePitch
 $$
 $$
-u_{YawRate}(n) = u_{YawRate}(n-1) + K_0 e(n) + K_1 e(n-1)
+error_{RateYaw}=Ref_{rateYaw}-RateYaw
 $$
 
-### Parameters:
+$$
+u_{RollRate}(n) = u_{RollRate}(n-1) + K_0 error_{RateRoll}(n) + K_1 error_{RateRoll}(n-1)
+$$
+$$
+u_{PitchRate}(n) = u_{PitchRate}(n-1) + K_0 error_{RatePitch}(n) + K_1 error_{RatePitch}(n-1)
+$$
+$$
+u_{YawRate}(n) = u_{YawRate}(n-1) + K_0 error_{RateYaw}(n) + K_1 error_{RateYaw}(n-1)
+$$
+
+### Parameters PI controller:
 
 The parameters are adjusted for each of the angular rates,
 
@@ -86,6 +125,7 @@ $$
 $$
 motor_4=u_{PWR}+u_{RollRate}-u_{PitchRate}+u_{YawRate}
 $$
+
 
 ## 🖼️ 3D PCB Render Version 4
 <p align="center">
