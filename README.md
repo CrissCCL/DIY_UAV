@@ -211,7 +211,7 @@ Where:
 <table>
   <tr>
     <td align="center">
-      <img src="docs/dron1.jpg" alt="UAV Prototype" width="300"><br>
+      <img src="docs/dron1.jpg" alt="UAV Prototype" width="400"><br>
       <sub>UAV Prototype — front view</sub>
     </td>
     <td align="center">
