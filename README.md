@@ -126,7 +126,7 @@ $$
 To improve the accuracy of angular position (Pitch, Roll) measurements, a **1D Kalman Filter** was implemented.  
 This filter provides an optimal estimation by combining sensor measurements with a predictive model, effectively reducing noise and improving stability for the control loop.  
 
-### 🔹 Filter Equations  
+### Filter Equations  
 
 **Prediction step:** 
 
@@ -160,7 +160,7 @@ Where:
 - $$R$$ : measurement noise covariance  
 - $$K_k$$: Kalman gain  
 
-
+### Filter Equations implementation
 The 1D Kalman filter is implemented as follows:
 
 $$
@@ -186,14 +186,13 @@ Where:
 - $$\sigma_{\dot{\theta}}^2$$ = gyro variance  
 - $$\sigma_{\theta}^2$$ = accelerometer variance  
 
-### 🔹 Angle Estimation from Accelerometer
+### Angle Estimation from Accelerometer
 
 The roll and pitch angles are estimated from accelerometer measurements as:
 
 $$
 \text{Roll} = \arctan\left(\frac{Acc_Y}{\sqrt{Acc_X^2 + Acc_Z^2}}\right) \cdot \frac{180}{\pi}
 $$
-
 $$
 \text{Pitch} = -\arctan\left(\frac{Acc_X}{\sqrt{Acc_Y^2 + Acc_Z^2}}\right) \cdot \frac{180}{\pi}
 $$
