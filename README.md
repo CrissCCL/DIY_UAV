@@ -164,19 +164,19 @@ Where:
 The 1D Kalman filter is implemented as follows:
 
 $$
-x_{k|k-1} &= x_{k-1|k-1} + T_s \cdot u_k
+x_{k|k-1} = x_{k-1|k-1} + T_s \cdot u_k
 $$
 $$
-P_{k|k-1} &= P_{k-1|k-1} + T_s^2 \cdot \sigma_{\dot{\theta}}^2
+P_{k|k-1} = P_{k-1|k-1} + T_s^2 \cdot \sigma_{\dot{\theta}}^2
 $$
 $$
-K_k &= \frac{P_{k|k-1}}{P_{k|k-1} + \sigma_{\theta}^2}
+K_k = \frac{P_{k|k-1}}{P_{k|k-1} + \sigma_{\theta}^2}
 $$
 $$
-x_{k|k} &= x_{k|k-1} + K_k \cdot (z_k - x_{k|k-1})
+x_{k|k} = x_{k|k-1} + K_k \cdot (z_k - x_{k|k-1})
 $$
 $$
-P_{k|k} &= (1 - K_k) P_{k|k-1}
+P_{k|k} = (1 - K_k) P_{k|k-1}
 $$
 
 Where:
