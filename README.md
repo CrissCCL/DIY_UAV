@@ -128,7 +128,8 @@ This filter provides an optimal estimation by combining sensor measurements with
 
 ### 🔹 Filter Equations  
 
-**Prediction step:**  
+**Prediction step:** 
+
 $$
 \hat{x}_{k|k-1} = \hat{x}_{k-1|k-1}
 $$  
@@ -138,6 +139,7 @@ P_{k|k-1} = P_{k-1|k-1} + Q
 $$  
 
 **Update step:**  
+
 $$
 K_k = \frac{P_{k|k-1}}{P_{k|k-1} + R}
 $$  
