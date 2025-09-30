@@ -123,7 +123,7 @@ $$
 
 ## 🔉 Signal Processing: 1D Kalman Filter  
 
-To improve the accuracy of angular position (Pitch, Roll) and angular velocity (Yaw) measurements, a **1D Kalman Filter** was implemented.  
+To improve the accuracy of angular position (Pitch, Roll) measurements, a **1D Kalman Filter** was implemented.  
 This filter provides an optimal estimation by combining sensor measurements with a predictive model, effectively reducing noise and improving stability for the control loop.  
 
 ### 🔹 Filter Equations  
@@ -160,10 +160,54 @@ Where:
 - $$R$$ : measurement noise covariance  
 - $$K_k$$: Kalman gain  
 
+## 🔉 Signal Processing: 1D Kalman Filter (Mathematical Formulation)
 
-📌 *This 1D Kalman Filter was applied individually to each angular measurement, reducing noise from the gyroscope/IMU and providing smoother inputs for the PID control loop.*
+The following equations describe the discrete-time 1D Kalman filter used in the UAV project.  
+Sampling time: \( T_s = 0.005 \, s \) (200 Hz).  
 
+### 🔹 Prediction step  
 
+State prediction (integration of gyro angular rate):  
+
+$$
+\hat{x}_{k|k-1} = \hat{x}_{k-1|k-1} + T_s \cdot u_k
+$$  
+
+Uncertainty prediction:  
+
+$$
+P_{k|k-1} = P_{k-1|k-1} + T_s^2 \cdot \sigma_{\dot{\theta}}^2
+$$  
+
+where:  
+- \( u_k \): gyro input (angular rate)  
+- \( \sigma_{\dot{\theta}} = 4^\circ/s \) (gyro noise standard deviation)  
+
+---
+
+### 🔹 Update step  
+
+Kalman gain:  
+
+$$
+K_k = \frac{P_{k|k-1}}{P_{k|k-1} + \sigma_\theta^2}
+$$  
+
+State update (fusion with accelerometer measurement):  
+
+$$
+\hat{x}_{k|k} = \hat{x}_{k|k-1} + K_k \left(z_k - \hat{x}_{k|k-1}\right)
+$$  
+
+Uncertainty update:  
+
+$$
+P_{k|k} = (1 - K_k) \, P_{k|k-1}
+$$  
+
+where:  
+- $$  z_k $$ : accelerometer measurement (angle)  
+- \( \sigma_\theta = 3^\circ \) (accelerometer noise standard deviation)  
 
 
 ## 🖼️ 3D PCB Render Version 4
