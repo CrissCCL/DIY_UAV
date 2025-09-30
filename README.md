@@ -212,7 +212,7 @@ Where:
   <tr>
     <td align="center">
       <img src="docs/dron1.jpg" alt="UAV Prototype" width="350"><br>
-      <sub>UAV Prototype — front view</sub>
+      <sub>UAV Prototype - Base structure </sub>
     </td>
     <td align="center">
       <img src="docs/pcb5.jpg" alt="UAV Prototype PCB assembled" width="300"><br>
