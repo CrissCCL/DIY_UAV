@@ -121,6 +121,48 @@ $$
 motor_4=u_{PWR}+u_{RollRate}-u_{PitchRate}+u_{YawRate}
 $$
 
+## 🔉 Signal Processing: 1D Kalman Filter  
+
+To improve the accuracy of angular position (Pitch, Roll) and angular velocity (Yaw) measurements, a **1D Kalman Filter** was implemented.  
+This filter provides an optimal estimation by combining sensor measurements with a predictive model, effectively reducing noise and improving stability for the control loop.  
+
+### 🔹 Filter Equations  
+
+**Prediction step:**  
+$$
+\hat{x}_{k|k-1} = \hat{x}_{k-1|k-1}
+$$  
+
+$$
+P_{k|k-1} = P_{k-1|k-1} + Q
+$$  
+
+**Update step:**  
+$$
+K_k = \frac{P_{k|k-1}}{P_{k|k-1} + R}
+$$  
+
+$$
+\hat{x}_{k|k} = \hat{x}_{k|k-1} + K_k \big(z_k - \hat{x}_{k|k-1}\big)
+$$  
+
+$$
+P_{k|k} = (1 - K_k) P_{k|k-1}
+$$  
+
+Where:  
+- $$( \hat{x}_{k|k})$$: estimated state (filtered measurement)  
+- $$z_k$$: raw sensor measurement  
+- $$P$$: error covariance  
+- $$Q$$: process noise covariance  
+- $$R$$ : measurement noise covariance  
+- $$K_k$$: Kalman gain  
+
+
+📌 *This 1D Kalman Filter was applied individually to each angular measurement, reducing noise from the gyroscope/IMU and providing smoother inputs for the PID control loop.*
+
+
+
 
 ## 🖼️ 3D PCB Render Version 4
 <p align="center">
