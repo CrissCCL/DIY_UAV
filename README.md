@@ -173,7 +173,7 @@ $$
 K_k = \frac{P_{k|k-1}}{P_{k|k-1} + \sigma_{\theta}^2}
 $$
 $$
-x_{k|k} = x_{k|k-1} + K_k \cdot (z_k - x_{k|k-1})
+x_{k|k} = x_{k|k-1} + K_k \cdot (x_{k|k-1})
 $$
 $$
 P_{k|k} = (1 - K_k) P_{k|k-1}
@@ -182,9 +182,8 @@ $$
 Where:
 - $$x$$ = estimated angle  
 - $$u_k$$ = angular rate (gyro input)  
-- $$z_k$$ = accelerometer measurement  
-- $$\sigma_{\dot{\theta}}^2$$ = gyro variance  
-- $$\sigma_{\theta}^2$$ = accelerometer variance  
+- $$\sigma_{\dot{\theta}}^2$$ = gyro variance (set constant value)
+- $$\sigma_{\theta}^2$$ = accelerometer variance (set constant value) 
 
 ### Angle Estimation from Accelerometer
 
