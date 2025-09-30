@@ -17,7 +17,6 @@ During development, the signal-to-noise ratio (S/N) of measurements was improved
 | Model Development          | ⚙️ In Progress               |
 | Pitch, Roll & Yaw Angular Velocity Control| ⚙️ In Progress             |
 | Pitch & Roll Stabilization  | ⚙️ In Progress             |
-
 | Prototype Flight Testing    | ⚠️ Not Started             |
 
 
