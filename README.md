@@ -201,22 +201,29 @@ Where:
 
 
 
-## 🖼️ 3D PCB Render Version 4
+## 🖼️ 3D PCB Render (Version 4)
 <p align="center">
 <img src="docs/control_dron_v4.jpg" alt="PCB Render" width="500">
 </p>
 
 ## 🖼️ UAV Prototype
-<p align="center">
-<img src="docs/dron1.jpg" alt="UAV Prototype" width="400">
-</p>
 
-<p align="center">
-<img src="docs/pcb5.jpg" alt="UAV Prototype PCB ensambled" width="400">
-</p>
-<p align="center">
-<img src="docs/dron5.jpg" alt="UAV Setup" width="400">
-</p>
+<table>
+  <tr>
+    <td align="center">
+      <img src="docs/dron1.jpg" alt="UAV Prototype" width="300"><br>
+      <sub>UAV Prototype — front view</sub>
+    </td>
+    <td align="center">
+      <img src="docs/pcb5.jpg" alt="UAV Prototype PCB assembled" width="300"><br>
+      <sub>PCB assembled on UAV</sub>
+    </td>
+    <td align="center">
+      <img src="docs/dron5.jpg" alt="UAV Setup" width="300"><br>
+      <sub>UAV Setup overview</sub>
+    </td>
+  </tr>
+</table>
 
 ## 📜 License
 MIT License
