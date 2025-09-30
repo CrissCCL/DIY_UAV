@@ -160,54 +160,47 @@ Where:
 - $$R$$ : measurement noise covariance  
 - $$K_k$$: Kalman gain  
 
-## 🔉 Signal Processing: 1D Kalman Filter (Mathematical Formulation)
 
-The following equations describe the discrete-time 1D Kalman filter used in the UAV project.  
-Sampling time: \( T_s = 0.005 \, s \) (200 Hz).  
-
-### 🔹 Prediction step  
-
-State prediction (integration of gyro angular rate):  
+The 1D Kalman filter is implemented as follows:
 
 $$
-\hat{x}_{k|k-1} = \hat{x}_{k-1|k-1} + T_s \cdot u_k
-$$  
+x_{k|k-1} &= x_{k-1|k-1} + T_s \cdot u_k
+$$
+$$
+P_{k|k-1} &= P_{k-1|k-1} + T_s^2 \cdot \sigma_{\dot{\theta}}^2
+$$
+$$
+K_k &= \frac{P_{k|k-1}}{P_{k|k-1} + \sigma_{\theta}^2}
+$$
+$$
+x_{k|k} &= x_{k|k-1} + K_k \cdot (z_k - x_{k|k-1})
+$$
+$$
+P_{k|k} &= (1 - K_k) P_{k|k-1}
+$$
 
-Uncertainty prediction:  
+Where:
+- $$x$$ = estimated angle  
+- $$u_k$$ = angular rate (gyro input)  
+- $$z_k$$ = accelerometer measurement  
+- $$\sigma_{\dot{\theta}}^2$$ = gyro variance  
+- $$\sigma_{\theta}^2$$ = accelerometer variance  
+
+### 🔹 Angle Estimation from Accelerometer
+
+The roll and pitch angles are estimated from accelerometer measurements as:
 
 $$
-P_{k|k-1} = P_{k-1|k-1} + T_s^2 \cdot \sigma_{\dot{\theta}}^2
-$$  
-
-where:  
-- \( u_k \): gyro input (angular rate)  
-- \( \sigma_{\dot{\theta}} = 4^\circ/s \) (gyro noise standard deviation)  
-
----
-
-### 🔹 Update step  
-
-Kalman gain:  
+\text{Roll} = \arctan\left(\frac{Acc_Y}{\sqrt{Acc_X^2 + Acc_Z^2}}\right) \cdot \frac{180}{\pi}
+$$
 
 $$
-K_k = \frac{P_{k|k-1}}{P_{k|k-1} + \sigma_\theta^2}
-$$  
-
-State update (fusion with accelerometer measurement):  
-
+\text{Pitch} = -\arctan\left(\frac{Acc_X}{\sqrt{Acc_Y^2 + Acc_Z^2}}\right) \cdot \frac{180}{\pi}
 $$
-\hat{x}_{k|k} = \hat{x}_{k|k-1} + K_k \left(z_k - \hat{x}_{k|k-1}\right)
-$$  
 
-Uncertainty update:  
+Where:
+- $$(Acc_X, Acc_Y, Acc_Z)$$ = accelerometer readings in each axis.  
 
-$$
-P_{k|k} = (1 - K_k) \, P_{k|k-1}
-$$  
-
-where:  
-- $$  z_k $$ : accelerometer measurement (angle)  
-- \( \sigma_\theta = 3^\circ \) (accelerometer noise standard deviation)  
 
 
 ## 🖼️ 3D PCB Render Version 4
