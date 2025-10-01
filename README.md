@@ -211,15 +211,15 @@ Where:
 <table>
   <tr>
     <td align="center">
-      <img src="docs/dron1.jpg" alt="UAV Prototype" width="350"><br>
+      <img src="docs/dron1.jpg" alt="UAV Prototype" width="450"><br>
       <sub>UAV Prototype - Base structure </sub>
     </td>
     <td align="center">
-      <img src="docs/pcb5.jpg" alt="UAV Prototype PCB assembled" width="300"><br>
+      <img src="docs/pcb5.jpg" alt="UAV Prototype PCB assembled" width="400"><br>
       <sub>PCB assembled on UAV</sub>
     </td>
     <td align="center">
-      <img src="docs/dron5.jpg" alt="UAV Setup" width="300"><br>
+      <img src="docs/dron5.jpg" alt="UAV Setup" width="400"><br>
       <sub>UAV Setup overview</sub>
     </td>
   </tr>
