@@ -201,7 +201,7 @@ Where:
 
 ## :triangular_ruler: Connection Diagram
 <p align="center">
-<img src="docs/conexiones.png" alt="Esquema de conexiones" width="500">
+<img src="docs/conexiones.png" alt="Esquema de conexiones" width="700">
 </p>
 
 ## 🖼️ 3D PCB Render (Version 4)
