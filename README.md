@@ -199,7 +199,10 @@ $$
 Where:
 - $$(Acc_X, Acc_Y, Acc_Z)$$ = accelerometer readings in each axis.  
 
-
+## :triangular_ruler: Connection Diagram
+<p align="center">
+<img src="docs/conexiones.png" alt="Esquema de conexiones" width="500">
+</p>
 
 ## 🖼️ 3D PCB Render (Version 4)
 <p align="center">
