@@ -30,6 +30,22 @@ During development, the signal-to-noise ratio (S/N) of measurements was improved
 
 📺 [Short Video 3](https://youtube.com/shorts/Z043N4uVOiI?feature=share)
 
+
+## ⚙️ System Description
+
+- **Controller:** Teensy 4.0 microcontroller (high-speed MCU for improved stability and processing)   
+- **Sensors:** 3-axis accelerometer and gyroscope (IMU module)  
+- **Actuators:** Brushless motors with ESCs  
+- **Control Strategy:** PID control for Pitch, Roll (angular position) and Yaw (angular velocity)  
+- **Estimation filter:** 1D Kalman filter applied to angular measurements (per-axis)  
+- **Sampling period:** **0.004 seconds (250 Hz)**  
+- **Data transmission:** UART link to a **Raspberry Pi 4B** for telemetry and logging  
+- **Data logging:** Raspberry Pi stores telemetry streams to `.csv` files for model validation and analysis  
+- **Visualization:** Offline monitoring and plotting via Matlab
+
+
+
+
 ## 🔄 Control Loops
 <p align="center">
 <img src="docs/diagrama uav.png" alt="UAV Control Loop" width="500">
