@@ -1,4 +1,4 @@
-# 🚁 UAV with PID Control ⚠️ *Work in Progress*
+<# 🚁 UAV with PID Control ⚠️ *Work in Progress*
 
 ## 📖 Overview
 This DIY UAV (Unmanned Aerial Vehicle) project is being developed with an automatic control loop using PID controllers.  
@@ -45,10 +45,9 @@ During development, the signal-to-noise ratio (S/N) of measurements was improved
 
 
 
-
 ## 🔄 Control Loops
 <p align="center">
-<img src="https://raw.githubusercontent.com/CrissCCL/DIY_UAV/main/docs/diagrama uav.png" alt="UAV Control Loop" width="500">
+<img width="500" alt="UAV Control Loop" src="https://github.com/user-attachments/assets/9d342de3-f207-44a3-a338-7d241f2a026d" />
 </p>
 
 ### Controlled Variables
