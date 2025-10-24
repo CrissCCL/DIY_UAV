@@ -21,7 +21,7 @@ During development, the signal-to-noise ratio (S/N) of measurements was improved
 
 
 ## 📂 Contents
-- `/docs` → photos and setup diagrams.
+- 
 
 ## 🌐 YouTube
 📺 [Short Video 1](https://youtube.com/shorts/LwX8zSV23eY?feature=share)
