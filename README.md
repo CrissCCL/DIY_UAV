@@ -44,7 +44,6 @@ During development, the signal-to-noise ratio (S/N) of measurements was improved
 - **Visualization:** Offline monitoring and plotting via Matlab
 
 
-
 ## 🔄 Control Loops
 <p align="center">
 <img width="500" alt="UAV Control Loop" src="https://github.com/user-attachments/assets/9d342de3-f207-44a3-a338-7d241f2a026d" />
@@ -214,30 +213,33 @@ $$
 Where:
 - $$(Acc_X, Acc_Y, Acc_Z)$$ = accelerometer readings in each axis.  
 
+
+
 ## :triangular_ruler: Connection Diagram
 <p align="center">
-<img src="https://raw.githubusercontent.com/CrissCCL/DIY_UAV/main/docs/conexiones.png" alt="Esquema de conexiones" width="700">
+<img width="700" alt="Esquema de conexiones" src="https://github.com/user-attachments/assets/f63e5bc2-419b-4b56-9e3a-c95954f03a04" />
 </p>
 
 ## 🖼️ 3D PCB Render (Version 4)
 <p align="center">
-<img src="https://raw.githubusercontent.com/CrissCCL/DIY_UAV/main/docs/control_dron_v4.jpg" alt="PCB Render" width="500">
+<img src="https://github.com/user-attachments/assets/74c0878c-502a-40b0-9939-4558bfcc2535" alt="PCB Render" width="500">
 </p>
 
 ## 🖼️ UAV Prototype
 
+
 <table>
   <tr>
     <td align="center">
-      <img src="https://raw.githubusercontent.com/CrissCCL/DIY_UAV/main/docs/dron1.jpg" alt="UAV Prototype" width="450"><br>
+      <img src="https://github.com/user-attachments/assets/fda18613-69da-4717-908f-0935936f2a6b" alt="UAV Prototype" width="450"><br>
       <sub>UAV Prototype - Base structure </sub>
     </td>
     <td align="center">
-      <img src="https://raw.githubusercontent.com/CrissCCL/DIY_UAV/main/docs/pcb5.jpg" alt="UAV Prototype PCB assembled" width="400"><br>
+      <img src="https://github.com/user-attachments/assets/8f7ca1dd-dca9-4222-b1d9-626072373875" alt="UAV Prototype PCB assembled" width="400"><br>
       <sub>PCB assembled on UAV</sub>
     </td>
     <td align="center">
-      <img src="https://raw.githubusercontent.com/CrissCCL/DIY_UAV/main/docs/dron5.jpg" alt="UAV Setup" width="400"><br>
+      <img src="https://github.com/user-attachments/assets/183a825f-f665-487a-9a31-e490cf9b1156" alt="UAV Setup" width="400"><br>
       <sub>UAV Setup overview</sub>
     </td>
   </tr>
