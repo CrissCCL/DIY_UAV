@@ -1,4 +1,4 @@
-<# 🚁 UAV with PID Control ⚠️ *Work in Progress*
+# 🚁 UAV with PID Control ⚠️ *Work in Progress*
 
 ## 📖 Overview
 This DIY UAV (Unmanned Aerial Vehicle) project is being developed with an automatic control loop using PID controllers.  
