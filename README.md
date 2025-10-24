@@ -48,7 +48,7 @@ During development, the signal-to-noise ratio (S/N) of measurements was improved
 
 ## 🔄 Control Loops
 <p align="center">
-<img src="docs/diagrama uav.png" alt="UAV Control Loop" width="500">
+<img src="https://raw.githubusercontent.com/CrissCCL/DIY_UAV/main/docs/diagrama uav.png" alt="UAV Control Loop" width="500">
 </p>
 
 ### Controlled Variables
@@ -217,12 +217,12 @@ Where:
 
 ## :triangular_ruler: Connection Diagram
 <p align="center">
-<img src="docs/conexiones.png" alt="Esquema de conexiones" width="700">
+<img src="https://raw.githubusercontent.com/CrissCCL/DIY_UAV/main/docs/conexiones.png" alt="Esquema de conexiones" width="700">
 </p>
 
 ## 🖼️ 3D PCB Render (Version 4)
 <p align="center">
-<img src="docs/control_dron_v4.jpg" alt="PCB Render" width="500">
+<img src="https://raw.githubusercontent.com/CrissCCL/DIY_UAV/main/docs/control_dron_v4.jpg" alt="PCB Render" width="500">
 </p>
 
 ## 🖼️ UAV Prototype
@@ -230,15 +230,15 @@ Where:
 <table>
   <tr>
     <td align="center">
-      <img src="docs/dron1.jpg" alt="UAV Prototype" width="450"><br>
+      <img src="https://raw.githubusercontent.com/CrissCCL/DIY_UAV/main/docs/dron1.jpg" alt="UAV Prototype" width="450"><br>
       <sub>UAV Prototype - Base structure </sub>
     </td>
     <td align="center">
-      <img src="docs/pcb5.jpg" alt="UAV Prototype PCB assembled" width="400"><br>
+      <img src="https://raw.githubusercontent.com/CrissCCL/DIY_UAV/main/docs/pcb5.jpg" alt="UAV Prototype PCB assembled" width="400"><br>
       <sub>PCB assembled on UAV</sub>
     </td>
     <td align="center">
-      <img src="docs/dron5.jpg" alt="UAV Setup" width="400"><br>
+      <img src="https://raw.githubusercontent.com/CrissCCL/DIY_UAV/main/docs/dron5.jpg" alt="UAV Setup" width="400"><br>
       <sub>UAV Setup overview</sub>
     </td>
   </tr>
