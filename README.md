@@ -232,7 +232,7 @@ Below is the design of the next PCB update, which has added terminal blocks for 
     </td>
     <td align="center">
         <img src="https://github.com/user-attachments/assets/9eea7920-87cc-44f7-b195-eca6473fe85e" alt="PCB Render - Version 5" width="550"><br>
-      <sub>PCB Render - Version 5 Back- NEXT UPDATE </sub>
+      <sub>PCB Render - Version 5 Back - NEXT UPDATE </sub>
     </td>
   </tr>
 </table>
