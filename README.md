@@ -227,7 +227,7 @@ Below is the design of the next PCB update, which has added terminal blocks for 
 <table>
   <tr>
     <td align="center">
-      <img alt="control_dron_v5" src="https://github.com/user-attachments/assets/c70bbf73-52a9-495e-ad60-3969762e8063" alt="PCB Render - Version 5" width="500"><br>
+      <img alt="control_dron_v5" src="https://github.com/user-attachments/assets/c70bbf73-52a9-495e-ad60-3969762e8063" alt="PCB Render - Version 5" width="550"><br>
       <sub>PCB Render - Version 5 Front - NEXT UPDATE </sub>
     </td>
     <td align="center">
