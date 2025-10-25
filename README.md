@@ -17,6 +17,7 @@ During development, the signal-to-noise ratio (S/N) of measurements was improved
 | Model Development          | ⚙️ In Progress               |
 | Pitch, Roll & Yaw Angular Velocity Control| ⚙️ In Progress             |
 | Pitch & Roll Stabilization  | ⚙️ In Progress             |
+| PCB Design with Improved structure and connections  | ⚙️ In Progress             |
 | Prototype Flight Testing    | ⚠️ Not Started             |
 
 
@@ -220,13 +221,29 @@ Where:
 <img width="700" alt="Esquema de conexiones" src="https://github.com/user-attachments/assets/f63e5bc2-419b-4b56-9e3a-c95954f03a04" />
 </p>
 
-## 🖼️ 3D PCB Render (Version 4)
+## 🖼️ 3D PCB Render
+Below is the design of the next PCB update, which has added terminal blocks for the battery and motor power connections, making maintenance easier.
+
+<table>
+  <tr>
+    <td align="center">
+      <img alt="control_dron_v5" src="https://github.com/user-attachments/assets/c70bbf73-52a9-495e-ad60-3969762e8063" alt="PCB Render - Version 5" width="500"><br>
+      <sub>PCB Render - Version 5 Front - NEXT UPDATE </sub>
+    </td>
+    <td align="center">
+        <img src="https://github.com/user-attachments/assets/9eea7920-87cc-44f7-b195-eca6473fe85e" alt="PCB Render - Version 5" width="550"><br>
+      <sub>PCB Render - Version 5 Back- NEXT UPDATE </sub>
+    </td>
+  </tr>
+</table>
+
+Below is the layout of the currently installed PCB.
+
 <p align="center">
 <img src="https://github.com/user-attachments/assets/74c0878c-502a-40b0-9939-4558bfcc2535" alt="PCB Render" width="500">
 </p>
 
 ## 🖼️ UAV Prototype
-
 
 <table>
   <tr>
@@ -236,7 +253,7 @@ Where:
     </td>
     <td align="center">
       <img src="https://github.com/user-attachments/assets/8f7ca1dd-dca9-4222-b1d9-626072373875" alt="UAV Prototype PCB assembled" width="400"><br>
-      <sub>PCB assembled on UAV</sub>
+      <sub>PCB assembled on UAV - Version 4 </sub>
     </td>
     <td align="center">
       <img src="https://github.com/user-attachments/assets/183a825f-f665-487a-9a31-e490cf9b1156" alt="UAV Setup" width="400"><br>
