@@ -56,6 +56,12 @@ During development, the signal-to-noise ratio (S/N) of measurements was improved
 
 ## 📐 Digital PID Control
 
+The PID controllers implemented in this project are **incremental (velocity form)** and use **trapezoidal integration** for the integral term.  
+This ensures:
+- Accurate discrete-time implementation suitable for microcontrollers.
+- Consistency between simulation and embedded hardware behavior.
+- Avoidance of integral windup when combined with actuator saturation or anti-windup mechanisms.
+
 The Module uses a discrete PI and P controller implemented on a Teensy microcontroller.  
 
 ### P controller:
