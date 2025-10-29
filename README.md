@@ -70,21 +70,21 @@ The Module uses a discrete PI and P controller implemented on a Teensy microcont
 The digital P controller in the outer loop was originally implemented for **Roll** and **Pitch** angles:
 
 $$
-error_{posRoll} = Ref_{Roll} - Angle_{Roll}
+error_{posRoll}(n) = Ref_{Roll}(n) - Angle_{Roll}(n)
 $$
 
 $$
-error_{posPitch} = Ref_{Pitch} - Angle_{Pitch}
+error_{posPitch}(n) = Ref_{Pitch}(n) - Angle_{Pitch}(n)
 $$
 
 Control actions:
 
 $$
-error_{rateRoll} = K_{Roll} \cdot error_{posRoll}
+error_{rateRoll}(n) = K_{Roll} \cdot error_{posRoll}(n)
 $$
 
 $$
-error_{ratePitch} = K_{Pitch} \cdot error_{posPitch}
+error_{ratePitch}(n) = K_{Pitch} \cdot error_{posPitch}(n)
 $$
 
 #### Incremental Form (Current)
