@@ -64,20 +64,52 @@ This ensures:
 
 The Module uses a discrete PI and P controller implemented on a Teensy microcontroller.  
 
-### P controller:
-Digital P controller in outer loop is implemented for Roll and Pitch angles,
+### P Controller for UAV
+
+#### Positional Form (Original)
+The digital P controller in the outer loop was originally implemented for **Roll** and **Pitch** angles:
 
 $$
-error_{posRoll}=Ref_{Roll}-Angle_{Roll}
+error_{posRoll} = Ref_{Roll} - Angle_{Roll}
 $$
+
 $$
-error_{posPitch}=Ref_{Pitch}-Angle_{Pitch}
+error_{posPitch} = Ref_{Pitch} - Angle_{Pitch}
 $$
+
+Control actions:
+
 $$
-error_{rateRoll}=K_{Roll} \cdot error_{posRoll}
+error_{rateRoll} = K_{Roll} \cdot error_{posRoll}
 $$
+
 $$
-error_{posPitch}=K_{Pitch} \cdot error_{posPitch}
+error_{ratePitch} = K_{Pitch} \cdot error_{posPitch}
+$$
+
+---
+
+#### Incremental Form (Current)
+The UAV control has been updated from a **positional P controller** to an **incremental (velocity form) P controller**.  
+
+Digital P controller in outer loop is implemented for Roll and Pitch angles:
+
+$$
+error_{posRoll}(n) = Ref_{Roll}(n) - Angle_{Roll}(n)
+$$
+
+$$
+error_{posPitch}(n) = Ref_{Pitch}(n) - Angle_{Pitch}(n)
+$$
+
+Incremental control actions:
+
+$$
+error_{rateRoll}(n) = error_{rateRoll}(n-1) + K_{Roll} \cdot (error_{posRoll}(n) - error_{posRoll}(n-1))
+$$
+
+$$
+error_{ratePitch}(n) = error_{ratePitch}(n-1) + K_{Pitch} \cdot (error_{posPitch}(n) - error_{posPitch}(n-1))
 $$
 
 
@@ -96,13 +128,13 @@ $$
 Digital PI controller in inner loop is implemented for Roll, Pitch and Yaw rates,
 
 $$
-error_{RateRoll}=Ref_{rateRoll}-Rate_{Roll}
+error_{RateRoll}(n)=Ref_{rateRoll}(n)-Rate_{Roll}(n)
 $$
 $$
-error_{RatePitch}=Ref_{ratePitch}-Rate_{Pitch}
+error_{RatePitch}(n)=Ref_{ratePitch}(n)-Rate_{Pitch}(n)
 $$
 $$
-error_{RateYaw}=Ref_{rateYaw}-Rate_{Yaw}
+error_{RateYaw}(n)=Ref_{rateYaw}(n)-Rate_{Yaw}(n)
 $$
 
 $$
