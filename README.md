@@ -87,8 +87,6 @@ $$
 error_{ratePitch} = K_{Pitch} \cdot error_{posPitch}
 $$
 
----
-
 #### Incremental Form (Current)
 The UAV control has been updated from a **positional P controller** to an **incremental (velocity form) P controller**.  
 
