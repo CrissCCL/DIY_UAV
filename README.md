@@ -110,6 +110,7 @@ $$
 error_{ratePitch}(n) = error_{ratePitch}(n-1) + K_{Pitch} \cdot (error_{posPitch}(n) - error_{posPitch}(n-1))
 $$
 
+> ⚠️ **Note:** The incremental P controller is a recent update and **has not been fully tested on the UAV**. Results may vary until validation is complete.
 
 #### Parameters P Controller:
 
