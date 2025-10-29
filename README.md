@@ -268,5 +268,11 @@ Below is the layout of the currently installed PCB.
   </tr>
 </table>
 
+## 🔗 Related Repositories
+
+For additional tutorials and examples related to digital control simulations, visit:
+
+- [Digital Control — Anti-Windup (Positional PI)](https://github.com/CrissCCL/Digital_ControlAntiWindup)
+
 ## 📜 License
 MIT License
