@@ -151,15 +151,15 @@ $$
 The parameters are adjusted for each of the angular rates,
 
 $$
-K_0 = K_p + \frac{K_p}{2T_i} T_s + \frac{K_p cdot T_d}{T_s} 
+K_0 = K_p + \frac{K_p}{2T_i} T_s + \frac{K_p \cdot T_d}{T_s} 
 $$
 
 $$
-K_1 = -K_p + \frac{K_p}{2T_i} T_s+ - 2\frac{K_p\cdot T_d}{T_s} 
+K_1 = -K_p + \frac{K_p}{2T_i} T_s+ - 2\frac{K_p \cdot T_d}{T_s} 
 $$
 
 $$
-K_2 = -\frac{K_p cdot T_d}{T_s} 
+K_2 = \frac{K_p \cdot T_d}{T_s} 
 $$
 
 
