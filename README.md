@@ -117,7 +117,7 @@ $$
 The parameters are adjusted for each of the angles, $$K_{Roll}$$ and $$K_{Pitch}$$.
 
 
-### PI controller (Incremental form):
+### PID controller (Incremental form):
 The control law for a PI controller in the digital domain is expressed as:
 
 $$
