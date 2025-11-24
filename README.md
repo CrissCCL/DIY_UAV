@@ -121,7 +121,7 @@ The parameters are adjusted for each of the angles, $$K_{Roll}$$ and $$K_{Pitch}
 The control law for a PI controller in the digital domain is expressed as:
 
 $$
-u(n) = u(n-1) + K_0 e(n) + K_1 e(n-1)
+u(n) = u(n-1) + K_0 e(n) + K_1 e(n-1)+K_2 e(n-2)
 $$
 
 Digital PI controller in inner loop is implemented for Roll, Pitch and Yaw rates,
@@ -137,26 +137,31 @@ error_{RateYaw}(n)=Ref_{rateYaw}(n)-Rate_{Yaw}(n)
 $$
 
 $$
-u_{RollRate}(n) = u_{RollRate}(n-1) + K_0 \cdot error_{RateRoll}(n) + K_1 \cdot error_{RateRoll}(n-1)
+u_{RollRate}(n) = u_{RollRate}(n-1) + K_0 \cdot error_{RateRoll}(n) + K_1 \cdot error_{RateRoll}(n-1)+ K_2 \cdot error_{RateRoll}(n-2)
 $$
 $$
-u_{PitchRate}(n) = u_{PitchRate}(n-1) + K_0 \cdot error_{RatePitch}(n) + K_1 \cdot error_{RatePitch}(n-1)
+u_{PitchRate}(n) = u_{PitchRate}(n-1) + K_0 \cdot error_{RatePitch}(n) + K_1 \cdot error_{RatePitch}(n-1) + K_2 \cdot error_{RatePitch}(n-2)
 $$
 $$
-u_{YawRate}(n) = u_{YawRate}(n-1) + K_0 \cdot error_{RateYaw}(n) + K_1 \cdot error_{RateYaw}(n-1)
+u_{YawRate}(n) = u_{YawRate}(n-1) + K_0 \cdot error_{RateYaw}(n) + K_1 \cdot error_{RateYaw}(n-1)+ K_2 \cdot error_{RateYaw}(n-2)
 $$
 
-#### Parameters PI controller:
+#### Parameters PID controller:
 
 The parameters are adjusted for each of the angular rates,
 
 $$
-K_0 = K_p + \frac{K_p}{2T_i} T_s
+K_0 = K_p + \frac{K_p}{2T_i} T_s + \frac{K_p cdot T_d}{T_s} 
 $$
 
 $$
-K_1 = -K_p + \frac{K_p}{2T_i} T_s
+K_1 = -K_p + \frac{K_p}{2T_i} T_s+ - 2\frac{K_p\cdot T_d}{T_s} 
 $$
+
+$$
+K_2 = -\frac{K_p cdot T_d}{T_s} 
+$$
+
 
 #### Control Signal Inner Loop:
 
