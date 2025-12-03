@@ -36,11 +36,11 @@ During development, the signal-to-noise ratio (S/N) of measurements was improved
 ## ⚙️ System Description
 
 - **Controller:** Teensy 4.0 microcontroller (high-speed MCU for improved stability and processing)   
-- **Sensors:** 3-axis accelerometer and gyroscope (IMU module)  
+- **Sensors:** 3-axis accelerometer and gyroscope (IMU module) - Dual sensors are testing
 - **Actuators:** Brushless motors with ESCs  
 - **Control Strategy:** PID control for Pitch, Roll (angular position) and Yaw (angular velocity)  
 - **Estimation filter:** 1D Kalman filter applied to angular measurements (per-axis)  
-- **Sampling period:** **0.004 seconds (250 Hz)**  
+- **Sampling period:** **0.005 seconds (200 Hz)**  
 - **Data transmission:** UART link to a **Raspberry Pi 4B** for telemetry and logging  
 - **Data logging:** Raspberry Pi stores telemetry streams to `.csv` files for model validation and analysis  
 - **Visualization:** Offline monitoring and plotting via Matlab
@@ -63,7 +63,7 @@ This ensures:
 - Consistency between simulation and embedded hardware behavior.
 - Avoidance of integral windup when combined with actuator saturation or anti-windup mechanisms.
 
-The Module uses a discrete PI and P controller implemented on a Teensy microcontroller.  
+The Module uses a discrete PID and P controller implemented on a Teensy microcontroller.  
 
 ### P Controller for UAV
 
