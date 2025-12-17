@@ -46,6 +46,23 @@ During development, the signal-to-noise ratio (S/N) of measurements was improved
 - **Visualization:** Offline monitoring and plotting via Matlab
 
 
+## 🔄 Control Hardware Update (In Progress)
+
+As part of the ongoing system upgrade, the control stage is being redesigned to include a **dual-IMU architecture**, integrating:
+
+- **BMI088** – robust IMU with excellent vibration tolerance
+- **ICM-4205** – high-bandwidth IMU for improved dynamic response
+
+The use of two different IMUs aims to:
+- Improve sensor redundancy
+- Compare noise characteristics and dynamic behavior
+- Enhance state estimation robustness under high vibration conditions
+
+This update is currently under development and will be validated through bench testing and flight experiments.
+
+
+
+
 ## 🔄 Control Loops
 <p align="center">
 <img width="500" alt="UAV Control Loop" src="https://github.com/user-attachments/assets/9d342de3-f207-44a3-a338-7d241f2a026d" />
@@ -310,6 +327,13 @@ Below is the layout of the currently installed PCB.
 For additional tutorials and examples related to digital control simulations, visit:
 
 - [Digital Control — Anti-Windup (Positional PI)](https://github.com/CrissCCL/Digital_ControlAntiWindup)
+
+This project is part of a modular UAV architecture.  
+The following repositories document related hardware modules and system updates:
+
+- **UAV Power Distribution & Regulation Board**  
+  Standalone power stage PCB integrating BTS50005-1LUA and LM2596 for ESC and control electronics supply.  
+  [Power Stage](https://github.com/CrissCCL/UAV_PowerStage)
 
 ## 📜 License
 MIT License
