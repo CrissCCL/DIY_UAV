@@ -288,11 +288,11 @@ Below is the design of the next PCB update, which has added terminal blocks for 
   <tr>
     <td align="center">
       <img  alt="control_dron_v5" src="https://github.com/user-attachments/assets/f69de7d6-d442-445a-9913-7fef57ca80f0" width="550"><br>
-      <sub>PCB Render - Version  - NEXT UPDATE </sub>
+      <sub>PCB Render - Control Stage - NEXT UPDATE </sub>
     </td>
     <td align="center">
         <img alt="stage power dron_v1_front" src="https://github.com/user-attachments/assets/54d63556-4770-4720-82ef-f94c9d20400e" width="550"><br>
-      <sub>PCB Render - Powe Stage - NEXT UPDATE </sub>
+      <sub>PCB Render - Power Stage - NEXT UPDATE </sub>
     </td>
   </tr>
 </table>
