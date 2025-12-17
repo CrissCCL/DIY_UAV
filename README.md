@@ -275,7 +275,7 @@ Below is the design of the next PCB update, which has added terminal blocks for 
     </td>
     <td align="center">
         <img alt="stage power dron_v1_front" src="https://github.com/user-attachments/assets/54d63556-4770-4720-82ef-f94c9d20400e" width="550"><br>
-      <sub>PCB Render - Powe Stage </sub>
+      <sub>PCB Render - Powe Stage - NEXT UPDATE </sub>
     </td>
   </tr>
 </table>
