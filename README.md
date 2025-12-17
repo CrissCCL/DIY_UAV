@@ -282,8 +282,7 @@ Where:
 </p>
 
 ## 🖼️ 3D PCB Render
-Below is the design of the next PCB update, which has added terminal blocks for the battery and motor power connections, making maintenance easier.
-
+The following renders show the **next hardware update**, where the control PCB and the power stage have been fully modularized into separate boards.
 <table>
   <tr>
     <td align="center">
