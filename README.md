@@ -334,5 +334,8 @@ The following repositories document related hardware modules and system updates:
   Standalone power stage PCB integrating BTS50005-1LUA and LM2596 for ESC and control electronics supply.  
   [Power Stage](https://github.com/CrissCCL/UAV_PowerStage)
 
+## 🤝 Support projects
+ Support me on Patreon [https://www.patreon.com/c/CrissCCL](https://www.patreon.com/c/CrissCCL)
+
 ## 📜 License
 MIT License
