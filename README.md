@@ -26,11 +26,13 @@ During development, the signal-to-noise ratio (S/N) of measurements was improved
 - 
 
 ## 🌐 YouTube
-📺 [Short Video 1](https://youtube.com/shorts/LwX8zSV23eY?feature=share)
+📺 [Test 1](https://youtube.com/shorts/LwX8zSV23eY?feature=share)
 
-📺 [Short Video 2](https://youtube.com/shorts/dZo7ZcapqBg?feature=share)
+📺 [Test 2](https://youtube.com/shorts/dZo7ZcapqBg?feature=share)
 
-📺 [Short Video 3](https://youtube.com/shorts/Z043N4uVOiI?feature=share)
+📺 [Test 3](https://youtube.com/shorts/Z043N4uVOiI?feature=share)
+
+📺 [Upgrade Power Stage](https://youtube.com/shorts/vSKApaUKDLE?feature=share)
 
 
 ## ⚙️ System Description
