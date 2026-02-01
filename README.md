@@ -1,5 +1,12 @@
 # 🚁 UAV with PID Control ⚠️ *Work in Progress*
 
+![UAV](https://img.shields.io/badge/UAV-DIY%20Platform-blue)
+![Embedded](https://img.shields.io/badge/Embedded-Control%20Stack-green)
+![Sensors](https://img.shields.io/badge/Sensors-IMU%2FGNSS-orange)
+![Hardware](https://img.shields.io/badge/Hardware-PCB%20Modules-lightgrey)
+![License](https://img.shields.io/badge/License-MIT-lightgrey)
+
+
 ## 📖 Overview
 This DIY UAV (Unmanned Aerial Vehicle) project is being developed with an automatic control loop using PID controllers.  
 The system controls angular position (Pitch and Roll) and angular velocity (Pitch, Roll and Yaw) to achieve stable and precise flight.  
