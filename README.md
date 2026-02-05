@@ -25,16 +25,13 @@ This separation improves reliability, reduces electrical noise coupling, simplif
 
 | Module | Description |
 |------------|---------------------------------------------|
-| 🧠 **Flight Control Stage** | Teensy-based control PCB with dual-IMU redundancy, real-time control and PWM actuation |
+| 🛩️ **Flight Control Stage** | Teensy-based control PCB with dual-IMU redundancy, real-time control and PWM actuation |
 | ⚡ **Power Stage** | Power distribution and regulation for ESCs and control electronics |
-| 🧭 **Dual IMU Module** | Redundant inertial sensing (BMI088 + ICM-42605) connected via independent I²C buses |
 
 ### Repositories
 
-- 🧠 Flight Control Stage → https://github.com/CrissCCL/UAV_Flight_Control_Stage
+- 🛩️ Flight Control Stage → https://github.com/CrissCCL/UAV_Flight_Control_Stage
 - ⚡ Power Stage → https://github.com/CrissCCL/UAV_PowerStage  
-- 🧭 Dual IMU Module → https://github.com/CrissCCL/UAV_Dual_IMU  
-
 
 ## 📊 Project Status
 | Component                  | Status                     |
@@ -349,11 +346,17 @@ Below is the layout of the currently installed PCB.
   </tr>
 </table>
 
-## 🔗 Related Repositories
+## 🔗 Supporting / Experimental Projects
 
-For additional tutorials and examples related to digital control simulations, visit:
+Additional boards and experiments developed during system validation:
 
-- [Digital Control — Anti-Windup (Positional PI)](https://github.com/CrissCCL/Digital_ControlAntiWindup)
+- 🧭 Dual IMU Evaluation Board  
+  Test platform used to characterize BMI088 and ICM-42605 sensors before integration into the Flight Control Stage  
+  https://github.com/CrissCCL/UAV_Dual_IMU
+
+- Digital Control — Anti-Windup (simulation examples)  
+  https://github.com/CrissCCL/Digital_ControlAntiWindup
+
 
 ## 🤝 Support projects
  Support me on Patreon [https://www.patreon.com/c/CrissCCL](https://www.patreon.com/c/CrissCCL)
