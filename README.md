@@ -15,21 +15,29 @@ During development, the signal-to-noise ratio (S/N) of measurements was improved
 
 > ⚠️ **Note:** This project is currently under development. Features and hardware are subject to change.
 
-## 📂 Contents
-- 
 
-## 🧩 System Architecture
+## 🧩 System Architecture — Hardware Update (Next Revision)
+
+The UAV platform follows a **modular hardware stack**, where control and power electronics are implemented on **independent PCBs**.
+
+This figure illustrates the **next-generation hardware stack**, highlighting the physical separation between control and power electronics.
+
+- 🧠 Flight Control Stage (sensing + control + I/O)
+- ⚡ Power Stage (distribution + regulation)
+- 🚁 UAV frame integration
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/e5505aba-81e0-4fd2-8924-9d0b97acb467" width="600">
 </p>
 <p align="center">
   <sub>
-  Modular hardware stack: Flight Control Stage (top) → Power Stage → UAV frame integration
+   New modular electronics stack — improved noise isolation, maintainability and hardware scalability
   </sub>
 </p>
 
 ## 🧩 Hardware Modules
+
+🚀 **Current development focus:** Modular electronics redesign and flight-control hardware integration.
 
 The UAV electronics follow a **modular architecture**, where control and power subsystems are implemented on **independent PCBs**.  
 This separation improves reliability, reduces electrical noise coupling, simplifies maintenance, and allows faster hardware iteration.
@@ -72,7 +80,7 @@ This separation improves reliability, reduces electrical noise coupling, simplif
 ## ⚙️ System Description
 
 - **Controller:** Teensy 4.0 microcontroller (high-speed MCU for improved stability and processing)   
-- **Sensors:** 3-axis accelerometer and gyroscope (IMU module) - Dual sensors are testing
+- **Sensors:** 3-axis accelerometer and gyroscope (IMU module) - Dual-IMU configuration (BMI088 + ICM-42605)
 - **Actuators:** Brushless motors with ESCs  
 - **Control Strategy:** PID control for Pitch, Roll (angular position) and Yaw (angular velocity)  
 - **Estimation filter:** 1D Kalman filter applied to angular measurements (per-axis)  
