@@ -49,7 +49,7 @@ This separation improves reliability, reduces electrical noise coupling, simplif
 
 ### Repositories
 
-- 🛩️ Flight Control Stage → https://github.com/CrissCCL/UAV_Flight_Control_Stage
+- 🛩️ Flight Control Stage → https://github.com/CrissCCL/UAV_FlightControl_Stage
 - ⚡ Power Stage → https://github.com/CrissCCL/UAV_PowerStage  
 
 ## 📊 Project Status
