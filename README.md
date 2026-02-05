@@ -23,7 +23,6 @@ During development, the signal-to-noise ratio (S/N) of measurements was improved
 <p align="center">
   <img src="https://github.com/user-attachments/assets/e5505aba-81e0-4fd2-8924-9d0b97acb467" width="500">
 </p>
-
 <p align="center">
   <sub>
   Modular hardware stack: Flight Control Stage (top) → Power Stage → UAV frame integration
