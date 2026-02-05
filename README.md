@@ -15,6 +15,27 @@ During development, the signal-to-noise ratio (S/N) of measurements was improved
 
 > ⚠️ **Note:** This project is currently under development. Features and hardware are subject to change.
 
+## 📂 Contents
+- 
+
+## 🧩 Hardware Modules
+
+The UAV electronics follow a **modular architecture**, where control and power subsystems are implemented on **independent PCBs**.  
+This separation improves reliability, reduces electrical noise coupling, simplifies maintenance, and allows faster hardware iteration.
+
+| Module | Description |
+|------------|---------------------------------------------|
+| 🧠 **Flight Control Stage** | Teensy-based control PCB with dual-IMU redundancy, real-time control and PWM actuation |
+| ⚡ **Power Stage** | Power distribution and regulation for ESCs and control electronics |
+| 🧭 **Dual IMU Module** | Redundant inertial sensing (BMI088 + ICM-42605) connected via independent I²C buses |
+
+### Repositories
+
+- 🧠 Flight Control Stage → https://github.com/CrissCCL/UAV_Flight_Control_Stage
+- ⚡ Power Stage → https://github.com/CrissCCL/UAV_PowerStage  
+- 🧭 Dual IMU Module → https://github.com/CrissCCL/UAV_Dual_IMU  
+
+
 ## 📊 Project Status
 | Component                  | Status                     |
 |-----------------------------|----------------------------|
@@ -29,8 +50,6 @@ During development, the signal-to-noise ratio (S/N) of measurements was improved
 | Prototype Flight Testing    | ⚠️ Not Started             |
 
 
-## 📂 Contents
-- 
 
 ## 🌐 YouTube
 📺 [Test 1](https://youtube.com/shorts/LwX8zSV23eY?feature=share)
