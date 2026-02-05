@@ -322,7 +322,7 @@ The following renders show the **next hardware update**, where the control PCB a
 <table>
   <tr>
     <td align="center">
-      <img  alt="control_dron_v5" src="https://github.com/user-attachments/assets/f69de7d6-d442-445a-9913-7fef57ca80f0" width="550"><br>
+      <img  alt="control_dron_v5" src="https://github.com/user-attachments/assets/ba6c4783-f66f-44c5-8a2b-d1f296775a4a" width="550"><br>
       <sub>PCB Render - Control Stage - NEXT UPDATE </sub>
     </td>
     <td align="center">
