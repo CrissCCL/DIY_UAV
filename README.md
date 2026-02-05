@@ -21,7 +21,7 @@ During development, the signal-to-noise ratio (S/N) of measurements was improved
 ## 🧩 System Architecture
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/e5505aba-81e0-4fd2-8924-9d0b97acb467" width="500">
+  <img src="https://github.com/user-attachments/assets/e5505aba-81e0-4fd2-8924-9d0b97acb467" width="600">
 </p>
 <p align="center">
   <sub>
@@ -314,7 +314,7 @@ Where:
 
 ## :triangular_ruler: Connection Diagram
 <p align="center">
-<img width="700" alt="Esquema de conexiones" src="https://github.com/user-attachments/assets/f63e5bc2-419b-4b56-9e3a-c95954f03a04" />
+<img width="600" alt="Esquema de conexiones" src="https://github.com/user-attachments/assets/f63e5bc2-419b-4b56-9e3a-c95954f03a04" />
 </p>
 
 ## 🖼️ 3D PCB Render
