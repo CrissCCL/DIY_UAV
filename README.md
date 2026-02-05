@@ -42,9 +42,9 @@ This separation improves reliability, reduces electrical noise coupling, simplif
 | Brushless Motors Setup      | ✅ Completed               |
 | Teensy PID Control Loop     | ✅ Completed              |
 | Model Development          |   ✅ Completed                 |
-| Sensor Signal improvement   | ⚙️ In Progress                |
-| Dual IMU testing    | ⚠️ Not Started                     |
-| Pitch, Roll & Yaw Angular Velocity Control| ⚙️ In Progress             |
+| Sensor Signal improvement   |  ✅ Completed                 |
+| Dual IMU testing    | ✅ Completed                 |
+| Pitch, Roll & Yaw Angular Velocity Control| ⚙️ In Progress          |
 | Pitch & Roll Stabilization  | ⚙️ In Progress             |
 | PCB Design with Improved structure and connections  | ⚙️ In Progress             |
 | Prototype Flight Testing    | ⚠️ Not Started             |
