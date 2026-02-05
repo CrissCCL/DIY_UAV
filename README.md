@@ -18,6 +18,18 @@ During development, the signal-to-noise ratio (S/N) of measurements was improved
 ## 📂 Contents
 - 
 
+## 🧩 System Architecture
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/e5505aba-81e0-4fd2-8924-9d0b97acb467" width="500">
+</p>
+
+<p align="center">
+  <sub>
+  Modular hardware stack: Flight Control Stage (top) → Power Stage → UAV frame integration
+  </sub>
+</p>
+
 ## 🧩 Hardware Modules
 
 The UAV electronics follow a **modular architecture**, where control and power subsystems are implemented on **independent PCBs**.  
