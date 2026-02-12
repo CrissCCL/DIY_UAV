@@ -320,10 +320,11 @@ Where:
 
 
 
-## :triangular_ruler: Connection Diagram
+## :triangular_ruler: Connection Diagram (update)
 <p align="center">
-<img width="600" alt="Esquema de conexiones" src="https://github.com/user-attachments/assets/f63e5bc2-419b-4b56-9e3a-c95954f03a04" />
+<img width="600" alt="Esquema de conexiones" src="https://github.com/user-attachments/assets/b7067729-2eee-4299-a9fc-034612cc47d8" />
 </p>
+
 
 ## 🖼️ 3D PCB Render
 The following renders show the **next hardware update**, where the control PCB and the power stage have been fully modularized into separate boards.
