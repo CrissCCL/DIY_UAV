@@ -60,9 +60,10 @@ This separation improves reliability, reduces electrical noise coupling, simplif
 | Model Development          |   ✅ Completed                 |
 | Sensor Signal improvement   |  ✅ Completed                 |
 | Dual IMU testing    | ✅ Completed                 |
+| PCB Design with Improved structure and connections  | ✅ Completed            |
 | Pitch, Roll & Yaw Angular Velocity Control| ⚙️ In Progress          |
 | Pitch & Roll Stabilization  | ⚙️ In Progress             |
-| PCB Design with Improved structure and connections  | ⚙️ In Progress             |
+
 | Prototype Flight Testing    | ⚠️ Not Started             |
 
 
