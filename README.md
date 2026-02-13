@@ -320,7 +320,7 @@ Where:
 
 
 
-## :triangular_ruler: Connection Diagram (update)
+## :triangular_ruler: Connection Diagram (update flight control stage)
 <p align="center">
 <img width="600" alt="Esquema de conexiones" src="https://github.com/user-attachments/assets/b7067729-2eee-4299-a9fc-034612cc47d8" />
 </p>
