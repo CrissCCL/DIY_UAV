@@ -52,6 +52,20 @@ This separation improves reliability, reduces electrical noise coupling, simplif
 - 🛩️ Flight Control Stage → https://github.com/CrissCCL/UAV_FlightControl_Stage
 - ⚡ Power Stage → https://github.com/CrissCCL/UAV_PowerStage  
 
+
+## 🔬 Propulsion Dynamics Identification
+
+The motor–ESC dynamic lag was experimentally identified using acoustic spectral ridge tracking.
+
+Repository:
+👉 https://github.com/CrissCCL/DIY_UAV_Motor_System_Identification
+
+This module provides:
+- Motor time constant (τ = 0.17 s)
+- Rotational axis plant models (Gp, Gq, Gr)
+- Bandwidth constraints for rate loop tuning
+
+
 ## 📊 Project Status
 | Component                  | Status                     |
 |-----------------------------|----------------------------|
