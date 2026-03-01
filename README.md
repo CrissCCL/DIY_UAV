@@ -202,7 +202,7 @@ Characteristics:
 - Smooth rate reference generation
 - Independent tuning for Roll and Pitch
 
-# 🟥 Inner Loop — Positional PID with Integrator Leak and Filtered Derivative
+# 🟥 Inner Loop — Positional PID (Derivative on Measurement + D Low-Pass Filter + Integral Freeze Anti-Windup)
 
 The inner loop regulates angular velocity (Roll, Pitch, Yaw) using a **positional discrete-time PID structure**.
 
@@ -212,114 +212,101 @@ $$
 e(n) = \omega_{ref}(n) - \omega(n)
 $$
 
-## 📐 Control Law
+Control law:
 
 $$
-U(n) = K_p e(n) + I(n) + D(n)
-$$
-
-## 🔹 Integral Term with Leak (Anti-Windup Enhancement)
-
-To prevent integrator accumulation during idle or low-throttle conditions, a leak factor was introduced:
-
-$$
-I(n) = (1 - a) I(n-1) + \frac{K_p T_s}{T_i} e(n)
+U(n) = P(n) + I(n) + D_f(n)
 $$
 
 Where:
 
-- $$a$$ = leak factor  
-- $$0 < a \ll 1$$
-
-This shifts the integrator pole from:
-
 $$
-z = 1
+P(n) = K_p e(n)
 $$
 
-to
+## 🔹 Integral Term + Anti-Windup (Integral Freeze on Saturation)
+
+The integral state is updated only when the actuator is **not saturated** (or when saturation conditions allow integration).  
+This avoids integrator windup without using a leak.
+
+Discrete integral update (when allowed):
 
 $$
-z = 1 - a
+I(n) = I(n-1) + K_i T_s\, e(n)
 $$
 
-### Embedded Logic
+If the controller output is saturated (anti-windup active), the integral is **frozen**:
+
+$$
+I(n) = I(n-1)
+$$
+
+## 🔹 Derivative Term (Derivative on Measurement, Negative Sign)
+
+The derivative action is applied on the measured rate (not on the error), which reduces derivative kick.
+
+Let the discrete-time rate derivative be:
+
+$$
+\dot{\omega}(n) \approx \frac{\omega(n) - \omega(n-1)}{T_s}
+$$
+
+Then the raw D-term implemented per axis is:
+
+$$
+D(n) = -K_p T_d \dot{\omega}(n)
+$$
+
+This matches the firmware convention:
+
+- `dRateRoll`, `dRatePitch`, `dRateYaw` represent the discrete derivative of the measured rates
+- The negative sign implements derivative on measurement
+
+
+## 🔹 D-Term First-Order Low-Pass Filter (Implemented)
+
+A first-order IIR low-pass filter is applied to the D-term:
+
+$$
+D_f(n) = \alpha D_f(n-1) + (1-\alpha)D(n)
+$$
+
+Where:
+
+- $$D_f(n)$$ is the filtered D-term
+- $$\alpha$$ corresponds to `D_ALPHA` in firmware
+- $$0 < \alpha < 1$$
+
+### Embedded Implementation (Reference)
 
 ```cpp
-bool allowIntegrate = (armed == 1) && (thr_in > 1100.0f);
-float a = allowIntegrate ? alphaU : alphaU_hold;
+// D-term (negative because derivative on measurement)
+float Droll  = -(Kpr * Tdr) * dRateRoll;
+float Dpitch = -(Kpp * Tdp) * dRatePitch;
+float Dyaw   = -(Kpy * Tdy) * dRateYaw;
 
-I = (1.0f - a) * I_prev + (Kp * Ts / Ti) * e;
+// D low-pass filter (recommended)
+Droll_f  = D_ALPHA * Droll_f  + (1.0f - D_ALPHA) * Droll;
+Dpitch_f = D_ALPHA * Dpitch_f + (1.0f - D_ALPHA) * Dpitch;
+Dyaw_f   = D_ALPHA * Dyaw_f   + (1.0f - D_ALPHA) * Dyaw;
 ```
 
-### Leak Behavior
-
-| Condition                    | Leak Factor        | Effect |
-|-----------------------------|--------------------|--------|
-| Armed + throttle active     | small α (~0.005)   | Normal integration |
-| Disarmed / low throttle     | larger α (~0.02)   | Fast decay of integrator |
-
-This significantly improved ground stability and eliminated pre-takeoff bias accumulation.
-
-## 🔹 Derivative Term with First-Order Low-Pass Filter
-
-To avoid noise amplification from gyroscope measurements, the derivative action includes a first-order low-pass filter.
-
-Continuous form:
+## ✅ Final Inner Loop Expression
 
 $$
-D(s) = \frac{K_p T_d s}{1 + T_f s}
-$$
-
-Where:
-
-- $$T_d$$ = derivative time  
-- $$T_f$$ = derivative filter constant  
-
-### Discrete Implementation
-
-$$
-D(n) = \alpha D(n-1) + \beta \big(e(n) - e(n-1)\big)
-$$
-
-Where:
-
-$$
-\alpha = \frac{T_f}{T_f + T_s}
-$$
-
-$$
-\beta = \frac{K_p T_d}{T_f + T_s}
-$$
-
-### Embedded Code
-
-```cpp
-float alpha = Tf / (Tf + Ts);
-float beta  = (Kp * Td) / (Tf + Ts);
-
-D = alpha * D_prev + beta * (e - e_prev);
-```
-
-This filtering reduces high-frequency amplification while preserving phase lead contribution.
-
-
-# ⚙ Complete Inner Loop Expression
-
-$$
-U(n) =K_p e(n)+ (1 - a) I(n-1)+ \frac{K_p T_s}{T_i} e(n)+ D(n)
+U(n) = K_p e(n) + I(n) + D_f(n)
 $$
 
 Applied independently to:
 
-- Roll rate
-- Pitch rate
-- Yaw rate
+- Roll rate  
+- Pitch rate  
+- Yaw rate  
 
 Each axis has independently tuned parameters:
 
 $$
-K_p,\quad T_i,\quad T_d,\quad T_f
+K_p,\quad T_i \; \left(K_i = \frac{K_p}{T_i}\right),\quad T_d,\quad D\_ALPHA
 $$
 
 # 🔧 Motor Mixing Matrix (X Configuration)
@@ -340,7 +327,7 @@ $$
 M_4 = U_{PWR} + U_{Roll} - U_{Pitch} + U_{Yaw}
 $$
 
-Motor layout:
+### Motor Layout
 
 - **M1:** Front Right  
 - **M4:** Front Left  
@@ -354,20 +341,6 @@ Motor layout:
 - Float arithmetic (Teensy 4.0 hardware FPU)
 - Telemetry via UART → Raspberry Pi 4B
 - Offline validation in MATLAB
-
-# 📊 Current Control Status
-
-| Component | Status |
-|------------|--------|
-| Outer Loop (Incremental PI) | ✅ Implemented |
-| Inner Loop (Positional PID) | ✅ Implemented |
-| Integrator Leak | ✅ Implemented |
-| Derivative Filtering | ✅ Implemented |
-| Roll/Pitch Rate Stability | ⚙️ Tuning |
-| Yaw Rate Optimization | ⚙️ Ongoing |
-| Full Flight Validation | ⚠️ Pending |
-
-
 
 # 🧠 Design Summary
 
