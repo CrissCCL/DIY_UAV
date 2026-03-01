@@ -232,7 +232,7 @@ This avoids integrator windup without using a leak.
 Discrete integral update (when allowed):
 
 $$
-I(n) = I(n-1) + K_i T_s\, e(n)
+I(n) = I(n-1) + K_i T_s e(n)
 $$
 
 If the controller output is saturated (anti-windup active), the integral is **frozen**:
