@@ -157,10 +157,7 @@ $$
 Incremental PI form:
 
 $$
-\omega_{ref}(n) =
-\omega_{ref}(n-1)
-+ K_p \big(e_\theta(n) - e_\theta(n-1)\big)
-+ \frac{K_p T_s}{T_i} e_\theta(n)
+\omega_{ref}(n) = \omega_{ref}(n-1)+ K_p \big(e_\theta(n) - e_\theta(n-1)\big)+ \frac{K_p T_s}{T_i} e_\theta(n)
 $$
 
 Characteristics:
@@ -198,7 +195,7 @@ $$
 Where:
 
 - $$a$$ = leak factor  
--$$0 < a \ll 1$$
+- $$0 < a \ll 1$$
 
 This shifts the integrator pole from:
 
