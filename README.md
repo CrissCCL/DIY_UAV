@@ -119,8 +119,6 @@ The use of two different IMUs aims to:
 This update is currently under development and will be validated through bench testing and flight experiments.
 
 
-
-
 # 🔄 Control Architecture (Cascaded)
 
 <p align="center">
@@ -133,7 +131,6 @@ The UAV implements a **cascaded digital control architecture** running at:
 - **Frequency:** 200 Hz  
 - **MCU:** Teensy 4.0 (FPU enabled)
 
----
 
 ## 🎯 Controlled Variables
 
@@ -142,7 +139,6 @@ The UAV implements a **cascaded digital control architecture** running at:
 | Outer | Roll, Pitch          | Angular Position   |
 | Inner | Roll, Pitch, Yaw     | Angular Velocity   |
 
----
 
 # 🟦 Outer Loop — Incremental PI Controller (Angle → Rate)
 
@@ -269,16 +265,11 @@ D = alpha * D_prev + beta * (e - e_prev);
 
 This filtering reduces high-frequency amplification while preserving phase lead contribution.
 
----
 
 # ⚙ Complete Inner Loop Expression
 
 $$
-U(n) =
-K_p e(n)
-+ (1 - a) I(n-1)
-+ \frac{K_p T_s}{T_i} e(n)
-+ D(n)
+U(n) =K_p e(n)+ (1 - a) I(n-1)+ \frac{K_p T_s}{T_i} e(n)+ D(n)
 $$
 
 Applied independently to:
