@@ -273,7 +273,7 @@ $$
 
 Where:
 
--$$T_d$$ = derivative time  
+- $$T_d$$ = derivative time  
 - $$T_f$$ = derivative filter constant  
 
 ### Discrete Implementation
