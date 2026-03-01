@@ -150,19 +150,34 @@ $$
 e_\theta(n) = \theta_{ref}(n) - \theta(n)
 $$
 
-Incremental PI form:
+### Incremental PI (velocity form)
+
+Using the standard incremental (velocity) form:
 
 $$
-\omega_{ref}(n) = \omega_{ref}(n-1)+ K_p \big(e_\theta(n) - e_\theta(n-1)\big)+ \frac{K_p T_s}{T_i} e_\theta(n)
+\Delta u(n) = u(n) - u(n-1)
 $$
 
+$$
+\Delta u(n) = K_p\big(e_\theta(n) - e_\theta(n-1)\big) + K_i T_s\, e_\theta(n)
+$$
+
+With $$K_i = \frac{K_p}{T_i}$$, the update becomes:
+
+$$
+u(n) = u(n-1) + K_p\big(e_\theta(n) - e_\theta(n-1)\big) + \frac{K_p T_s}{T_i}\, e_\theta(n)
+$$
+
+In this project, $$u(n)$$ corresponds to the **rate reference**:
+
+$$
+\omega_{ref}(n) = \omega_{ref}(n-1) + K_p\big(e_\theta(n) - e_\theta(n-1)\big) + \frac{K_p T_s}{T_i}\, e_\theta(n)
+$$
 Characteristics:
 
 - Incremental (velocity form)
-- No large positional accumulation
 - Smooth rate reference generation
 - Independent tuning for Roll and Pitch
-
 
 # 🟥 Inner Loop — Positional PID with Integrator Leak and Filtered Derivative
 
