@@ -173,6 +173,7 @@ In this project, $$u(n)$$ corresponds to the **rate reference**:
 $$
 \omega_{ref}(n) = \omega_{ref}(n-1) + K_p\big(e_\theta(n) - e_\theta(n-1)\big) + \frac{K_p T_s}{T_i}\, e_\theta(n)
 $$
+
 Characteristics:
 
 - Incremental (velocity form)
