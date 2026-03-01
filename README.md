@@ -121,138 +121,236 @@ This update is currently under development and will be validated through bench t
 
 
 
-## 🔄 Control Loops
+# 🔄 Control Architecture (Cascaded)
+
 <p align="center">
 <img width="500" alt="UAV Control Loop" src="https://github.com/user-attachments/assets/9d342de3-f207-44a3-a338-7d241f2a026d" />
 </p>
 
-### Controlled Variables
-- **Pitch & Roll** → Angular position control (stabilization)
-- **Pitch, Roll & Yaw** → Angular velocity control (rotation rate)
+The UAV implements a **cascaded digital control architecture** running at:
 
-## 📐 Digital PID Control
+- **Sampling period:** Ts = 0.005 s  
+- **Frequency:** 200 Hz  
+- **MCU:** Teensy 4.0 (FPU enabled)
 
-The PID controllers implemented in this project are **incremental (velocity form)** and use **trapezoidal integration** for the integral term.  
-This ensures:
-- Accurate discrete-time implementation suitable for microcontrollers.
-- Consistency between simulation and embedded hardware behavior.
-- Avoidance of integral windup when combined with actuator saturation or anti-windup mechanisms.
+---
 
-The Module uses a discrete PID and P controller implemented on a Teensy microcontroller.  
+## 🎯 Controlled Variables
 
-### P Controller for UAV
+| Loop  | Variable              | Type               |
+|-------|----------------------|--------------------|
+| Outer | Roll, Pitch          | Angular Position   |
+| Inner | Roll, Pitch, Yaw     | Angular Velocity   |
 
-#### Positional Form (Original)
-The digital P controller in the outer loop was originally implemented for **Roll** and **Pitch** angles:
+---
 
-$$
-error_{posRoll}(n) = Ref_{Roll}(n) - Angle_{Roll}(n)
-$$
+# 🟦 Outer Loop — Incremental PI Controller (Angle → Rate)
 
-$$
-error_{posPitch}(n) = Ref_{Pitch}(n) - Angle_{Pitch}(n)
-$$
+The outer loop regulates angular position (Roll, Pitch) and generates the reference for the rate loop.
 
-Control actions:
+Angle error:
 
 $$
-error_{rateRoll}(n) = K_{Roll} \cdot error_{posRoll}(n)
+e_\theta(n) = \theta_{ref}(n) - \theta(n)
+$$
+
+Incremental PI form:
+
+$$
+\omega_{ref}(n) =
+\omega_{ref}(n-1)
++ K_p \big(e_\theta(n) - e_\theta(n-1)\big)
++ \frac{K_p T_s}{T_i} e_\theta(n)
+$$
+
+Characteristics:
+
+- Incremental (velocity form)
+- No large positional accumulation
+- Smooth rate reference generation
+- Independent tuning for Roll and Pitch
+
+
+# 🟥 Inner Loop — Positional PID with Integrator Leak and Filtered Derivative
+
+The inner loop regulates angular velocity (Roll, Pitch, Yaw) using a **positional discrete-time PID structure**.
+
+Rate error:
+
+$$
+e(n) = \omega_{ref}(n) - \omega(n)
+$$
+
+## 📐 Control Law
+
+$$
+U(n) = K_p e(n) + I(n) + D(n)
+$$
+
+## 🔹 Integral Term with Leak (Anti-Windup Enhancement)
+
+To prevent integrator accumulation during idle or low-throttle conditions, a leak factor was introduced:
+
+$$
+I(n) = (1 - a) I(n-1) + \frac{K_p T_s}{T_i} e(n)
+$$
+
+Where:
+
+- $$a$$ = leak factor  
+-$$0 < a \ll 1$$
+
+This shifts the integrator pole from:
+
+$$
+z = 1
+$$
+
+to
+
+$$
+z = 1 - a
+$$
+
+### Embedded Logic
+
+```cpp
+bool allowIntegrate = (armed == 1) && (thr_in > 1100.0f);
+float a = allowIntegrate ? alphaU : alphaU_hold;
+
+I = (1.0f - a) * I_prev + (Kp * Ts / Ti) * e;
+```
+
+### Leak Behavior
+
+| Condition                    | Leak Factor        | Effect |
+|-----------------------------|--------------------|--------|
+| Armed + throttle active     | small α (~0.005)   | Normal integration |
+| Disarmed / low throttle     | larger α (~0.02)   | Fast decay of integrator |
+
+This significantly improved ground stability and eliminated pre-takeoff bias accumulation.
+
+## 🔹 Derivative Term with First-Order Low-Pass Filter
+
+To avoid noise amplification from gyroscope measurements, the derivative action includes a first-order low-pass filter.
+
+Continuous form:
+
+$$
+D(s) = \frac{K_p T_d s}{1 + T_f s}
+$$
+
+Where:
+
+-$$T_d$$ = derivative time  
+- $$T_f$$ = derivative filter constant  
+
+### Discrete Implementation
+
+$$
+D(n) = \alpha D(n-1) + \beta \big(e(n) - e(n-1)\big)
+$$
+
+Where:
+
+$$
+\alpha = \frac{T_f}{T_f + T_s}
 $$
 
 $$
-error_{ratePitch}(n) = K_{Pitch} \cdot error_{posPitch}(n)
+\beta = \frac{K_p T_d}{T_f + T_s}
 $$
 
-#### Incremental Form (Current)
-The UAV control has been updated from a **positional P controller** to an **incremental (velocity form) P controller**.  
+### Embedded Code
 
-Digital P controller in outer loop is implemented for Roll and Pitch angles:
+```cpp
+float alpha = Tf / (Tf + Ts);
+float beta  = (Kp * Td) / (Tf + Ts);
 
-$$
-error_{posRoll}(n) = Ref_{Roll}(n) - Angle_{Roll}(n)
-$$
+D = alpha * D_prev + beta * (e - e_prev);
+```
 
-$$
-error_{posPitch}(n) = Ref_{Pitch}(n) - Angle_{Pitch}(n)
-$$
+This filtering reduces high-frequency amplification while preserving phase lead contribution.
 
-Incremental control actions:
+---
 
-$$
-error_{rateRoll}(n) = error_{rateRoll}(n-1) + K_{Roll} \cdot (error_{posRoll}(n) - error_{posRoll}(n-1))
-$$
+# ⚙ Complete Inner Loop Expression
 
 $$
-error_{ratePitch}(n) = error_{ratePitch}(n-1) + K_{Pitch} \cdot (error_{posPitch}(n) - error_{posPitch}(n-1))
+U(n) =
+K_p e(n)
++ (1 - a) I(n-1)
++ \frac{K_p T_s}{T_i} e(n)
++ D(n)
 $$
 
-> ⚠️ **Note:** The incremental P controller is a recent update and **has not been fully tested on the UAV**. Results may vary until validation is complete.
+Applied independently to:
 
-#### Parameters P Controller:
+- Roll rate
+- Pitch rate
+- Yaw rate
 
-The parameters are adjusted for each of the angles, $$K_{Roll}$$ and $$K_{Pitch}$$.
-
-
-### PID controller (Incremental form):
-The control law for a PI controller in the digital domain is expressed as:
+Each axis has independently tuned parameters:
 
 $$
-u(n) = u(n-1) + K_0 e(n) + K_1 e(n-1)+K_2 e(n-2)
+K_p,\quad T_i,\quad T_d,\quad T_f
 $$
 
-Digital PI controller in inner loop is implemented for Roll, Pitch and Yaw rates,
+# 🔧 Motor Mixing Matrix (X Configuration)
 
 $$
-error_{RateRoll}(n)=Ref_{rateRoll}(n)-Rate_{Roll}(n)
-$$
-$$
-error_{RatePitch}(n)=Ref_{ratePitch}(n)-Rate_{Pitch}(n)
-$$
-$$
-error_{RateYaw}(n)=Ref_{rateYaw}(n)-Rate_{Yaw}(n)
+M_1 = U_{PWR} - U_{Roll} - U_{Pitch} - U_{Yaw}
 $$
 
 $$
-u_{RollRate}(n) = u_{RollRate}(n-1) + K_0 \cdot error_{RateRoll}(n) + K_1 \cdot error_{RateRoll}(n-1)+ K_2 \cdot error_{RateRoll}(n-2)
-$$
-$$
-u_{PitchRate}(n) = u_{PitchRate}(n-1) + K_0 \cdot error_{RatePitch}(n) + K_1 \cdot error_{RatePitch}(n-1) + K_2 \cdot error_{RatePitch}(n-2)
-$$
-$$
-u_{YawRate}(n) = u_{YawRate}(n-1) + K_0 \cdot error_{RateYaw}(n) + K_1 \cdot error_{RateYaw}(n-1)+ K_2 \cdot error_{RateYaw}(n-2)
-$$
-
-#### Parameters PID controller:
-
-The parameters are adjusted for each of the angular rates,
-
-$$
-K_0 = K_p + \frac{K_p}{2T_i} T_s + \frac{K_p \cdot T_d}{T_s} 
+M_2 = U_{PWR} - U_{Roll} + U_{Pitch} + U_{Yaw}
 $$
 
 $$
-K_1 = -K_p + \frac{K_p}{2T_i} T_s- 2\frac{K_p \cdot T_d}{T_s} 
+M_3 = U_{PWR} + U_{Roll} + U_{Pitch} - U_{Yaw}
 $$
 
 $$
-K_2 = \frac{K_p \cdot T_d}{T_s} 
+M_4 = U_{PWR} + U_{Roll} - U_{Pitch} + U_{Yaw}
 $$
 
+Motor layout:
 
-#### Control Signal Inner Loop:
+- **M1:** Front Right  
+- **M4:** Front Left  
+- **M2:** Rear Right  
+- **M3:** Rear Left  
 
-$$
-motor_1=u_{PWR}-u_{RollRate}-u_{PitchRate}-u_{YawRate}
-$$
-$$
-motor_2=u_{PWR}-u_{RollRate}+u_{PitchRate}+u_{YawRate}
-$$
-$$
-motor_3=u_{PWR}+u_{RollRate}+u_{PitchRate}-u_{YawRate}
-$$
-$$
-motor_4=u_{PWR}+u_{RollRate}-u_{PitchRate}+u_{YawRate}
-$$
+# ⏱ Real-Time Execution
+
+- Control frequency: **200 Hz**
+- ESC PWM synchronized
+- Float arithmetic (Teensy 4.0 hardware FPU)
+- Telemetry via UART → Raspberry Pi 4B
+- Offline validation in MATLAB
+
+# 📊 Current Control Status
+
+| Component | Status |
+|------------|--------|
+| Outer Loop (Incremental PI) | ✅ Implemented |
+| Inner Loop (Positional PID) | ✅ Implemented |
+| Integrator Leak | ✅ Implemented |
+| Derivative Filtering | ✅ Implemented |
+| Roll/Pitch Rate Stability | ⚙️ Tuning |
+| Yaw Rate Optimization | ⚙️ Ongoing |
+| Full Flight Validation | ⚠️ Pending |
+
+
+
+# 🧠 Design Summary
+
+- Cascaded architecture improves disturbance rejection.
+- Outer loop incremental PI ensures smooth rate references.
+- Inner loop positional PID simplifies tuning and interpretability.
+- Integrator leak prevents ground bias accumulation.
+- Filtered derivative reduces noise amplification.
+- Control design aligned with identified motor lag \( \tau \approx 0.17\,s \).
 
 ## 🔉 Signal Processing: 1D Kalman Filter  
 
