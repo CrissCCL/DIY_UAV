@@ -140,9 +140,11 @@ The UAV implements a **cascaded digital control architecture** running at:
 | Inner | Roll, Pitch, Yaw     | Angular Velocity   |
 
 
-# 🟦 Outer Loop — Incremental PI Controller (Angle → Rate)
+---
 
-The outer loop regulates angular position (Roll, Pitch) and generates the reference for the rate loop.
+# 🟦 Outer Loop — Incremental PI with Trapezoidal Integral (Angle → Rate)
+
+The outer loop regulates angular position (Roll, Pitch) and generates the reference for the inner (rate) loop.
 
 Angle error:
 
@@ -150,33 +152,53 @@ $$
 e_\theta(n) = \theta_{ref}(n) - \theta(n)
 $$
 
-### Incremental PI (velocity form)
+## Incremental PI (velocity form) + Trapezoidal integration
 
-Using the standard incremental (velocity) form:
+Using the incremental update:
 
 $$
 \Delta u(n) = u(n) - u(n-1)
 $$
 
-$$
-\Delta u(n) = K_p\big(e_\theta(n) - e_\theta(n-1)\big) + K_i T_s\, e_\theta(n)
-$$
-
-With $$K_i = \frac{K_p}{T_i}$$, the update becomes:
+Proportional increment:
 
 $$
-u(n) = u(n-1) + K_p\big(e_\theta(n) - e_\theta(n-1)\big) + \frac{K_p T_s}{T_i}\, e_\theta(n)
+\Delta u_P(n) = K_p \big(e_\theta(n) - e_\theta(n-1)\big)
 $$
 
+Integral increment with **trapezoidal rule**:
+
+$$
+\Delta u_I(n) = K_i \frac{T_s}{2}\big(e_\theta(n) + e_\theta(n-1)\big)
+$$
+
+Total increment:
+
+$$
+\Delta u(n) =K_p \big(e_\theta(n) - e_\theta(n-1)\big)+K_i \frac{T_s}{2}\big(e_\theta(n) + e_\theta(n-1)\big)
+$$
+
+Update equation:
+
+$$
+u(n) = u(n-1) + K_p \big(e_\theta(n) - e_\theta(n-1)\big) + K_i \frac{T_s}{2}\big(e_\theta(n) + e_\theta(n-1)\big)
+$$
+
+With $$K_i = \frac{K_p}{T_i}$$:
+
+$$
+u(n) = u(n-1) + K_p \big(e_\theta(n) - e_\theta(n-1)\big)+\frac{K_p}{T_i}\frac{T_s}{2}\big(e_\theta(n) + e_\theta(n-1)\big)
+$$
 In this project, $$u(n)$$ corresponds to the **rate reference**:
 
 $$
-\omega_{ref}(n) = \omega_{ref}(n-1) + K_p\big(e_\theta(n) - e_\theta(n-1)\big) + \frac{K_p T_s}{T_i}\, e_\theta(n)
+\omega_{ref}(n) = \omega_{ref}(n-1) + K_p \big(e_\theta(n) - e_\theta(n-1)\big) + K_i \frac{T_s}{2}\big(e_\theta(n) + e_\theta(n-1)\big)
 $$
 
 Characteristics:
 
 - Incremental (velocity form)
+- Trapezoidal integral (Tustin-consistent)
 - Smooth rate reference generation
 - Independent tuning for Roll and Pitch
 
