@@ -140,67 +140,80 @@ The UAV implements a **cascaded digital control architecture** running at:
 | Inner | Roll, Pitch, Yaw     | Angular Velocity   |
 
 
-# 🟦 Outer Loop — Incremental PI with Trapezoidal Integral (Angle → Rate)
+# 🟦 Outer Loop — Proportional Angle Controller (Angle → Rate)
 
-The outer loop regulates angular position (Roll, Pitch) and generates the reference for the inner (rate) loop.
+The outer loop regulates the angular position (Roll and Pitch) and generates the reference angular rate for the inner loop.
 
 Angle error:
 
 $$
-e_\theta(n) = \theta_{ref}(n) - \theta(n)
+e_\theta(n) = \theta_{cmd}(n) - \theta(n)
 $$
 
-## Incremental PI (velocity form) + Trapezoidal integration
-
-Using the incremental update:
+A **proportional controller** converts the angle error into a desired angular rate:
 
 $$
-\Delta u(n) = u(n) - u(n-1)
+\omega_{ref,raw}(n) = K_p\, e_\theta(n)
 $$
 
-Proportional increment:
+The reference rate is limited to avoid excessive angular velocity:
 
 $$
-\Delta u_P(n) = K_p \big(e_\theta(n) - e_\theta(n-1)\big)
+\omega_{ref,raw}(n) =
+\text{clamp}\big(\omega_{ref,raw}(n), -\omega_{max}, \omega_{max}\big)
 $$
 
-Integral increment with **trapezoidal rule**:
+---
+
+## Rate Target Slew Limiting
+
+To avoid abrupt changes in the commanded angular rate, the reference is rate-limited:
 
 $$
-\Delta u_I(n) = K_i \frac{T_s}{2}\big(e_\theta(n) + e_\theta(n-1)\big)
+\omega_{ref}(n) =
+\text{slew\_limit}\big(\omega_{ref}(n-1), \omega_{ref,raw}(n)\big)
 $$
 
-Total increment:
+This improves stability and prevents aggressive control actions caused by sudden stick inputs.
+
+---
+
+## Target Rate Filtering
+
+The commanded rate is additionally smoothed using a first-order filter:
 
 $$
-\Delta u(n) = K_p \big(e_\theta(n) - e_\theta(n-1)\big) + K_i \frac{T_s}{2}\big(e_\theta(n) + e_\theta(n-1)\big)
+\omega_{ref,f}(n) =
+\alpha_t\,\omega_{ref,f}(n-1)
++
+(1-\alpha_t)\,\omega_{ref}(n)
 $$
 
-Update equation:
+Where:
+
+- $$\omega_{ref,f}$$ = filtered rate reference  
+- $$\alpha_t$$ = target smoothing coefficient (`TARGET_ALPHA`)
+
+The filtered reference is used by the inner loop controller.
+
+---
+
+## Final Rate Reference
+
+The signal delivered to the rate controller is therefore:
 
 $$
-u(n) = u(n-1) + K_p \big(e_\theta(n) - e_\theta(n-1)\big) + K_i \frac{T_s}{2}\big(e_\theta(n) + e_\theta(n-1)\big)
+\omega_{ref,f}(n)
 $$
 
-With $$K_i = \frac{K_p}{T_i}$$:
-
-$$
-u(n) = u(n-1) + K_p \big(e_\theta(n) - e_\theta(n-1)\big) + \frac{K_p}{T_i}\frac{T_s}{2}\big(e_\theta(n) + e_\theta(n-1)\big)
-$$
-
-In this project, $$u(n)$$ corresponds to the **rate reference**:
-
-$$
-\omega_{ref}(n) = \omega_{ref}(n-1) + K_p \big(e_\theta(n) - e_\theta(n-1)\big) + K_i \frac{T_s}{2}\big(e_\theta(n) + e_\theta(n-1)\big)
-$$
+which represents a **smoothed and rate-limited angular velocity command** generated from the angle error.
 
 Characteristics:
 
-- Incremental (velocity form)
-- Trapezoidal integral (Tustin-consistent)
-- Smooth rate reference generation
-- Independent tuning for Roll and Pitch
-
+- Proportional angle controller
+- Rate saturation
+- Slew-limited rate command
+- First-order reference filtering
 
 
 # 🟥 Inner Loop — Positional PID with Derivative on Measurement, D-Term Filtering and Conditional Anti-Windup
@@ -301,20 +314,30 @@ Dyaw_f   = D_ALPHA * Dyaw_f   + (1.0f - D_ALPHA) * Dyaw;
 ```
 ## 🔹 Feedforward Term
 
-A feedforward contribution is added from the target angular rate to improve dynamic response and reduce tracking lag.
+A feedforward contribution is added from the **filtered target angular rate** to improve dynamic response and reduce tracking lag.
 
 $$
-FF(n) = K_{ff}\,\omega_{ref}(n)
+FF(n) = K_{ff}\,\omega_{ref,f}(n)
 $$
 
-This term anticipates the required control effort based on the commanded angular rate and is applied independently for Roll, Pitch and Yaw.
+This anticipates the control effort required to track the commanded angular rate and reduces the burden on the feedback controller.
+
+Feedforward is applied independently for **Roll, Pitch and Yaw**.
+
+---
 
 ## ✅ Final Inner Loop Expression
 
-The complete rate control law is:
+The complete rate control law implemented in the firmware is:
 
 $$
 U(n) = K_p e(n) + I(n) + D_f(n) + FF(n)
+$$
+
+Where
+
+$$
+e(n) = \omega_{ref,f}(n) - \omega_f(n)
 $$
 
 Applied independently to:
@@ -328,6 +351,8 @@ Each axis has independently tuned parameters:
 $$
 K_p,\quad T_i,\quad T_d,\quad D\_ALPHA,\quad K_{ff}
 $$
+
+---
 
 # 🔧 Motor Mixing Matrix (X Configuration)
 
@@ -354,6 +379,8 @@ $$
 - **M2:** Rear Right  
 - **M3:** Rear Left  
 
+---
+
 # ⏱ Real-Time Execution
 
 - Control frequency: **200 Hz**
@@ -362,17 +389,22 @@ $$
 - Telemetry via UART → Raspberry Pi 4B
 - Offline validation in MATLAB
 
+---
+
 # 🧠 Design Summary
 
 - Cascaded architecture improves disturbance rejection.
-- Outer loop incremental PI ensures smooth rate references.
-- Inner loop positional PID uses **derivative on measurement**.
+- **Outer loop uses a proportional controller (P)** to generate the angular rate reference.
+- Inner loop positional PID uses **derivative on measurement** to reduce derivative kick.
 - The D-term includes a **first-order low-pass filter** to reduce noise amplification.
 - Angular-rate measurements are conditioned using **notch + biquad low-pass filtering**.
-- A **feedforward** term improves reference tracking and transient response.
-- Anti-windup is implemented through **conditional integral freezing under saturation**.
-- Control design is aligned with the identified motor lag $$\tau \approx 0.17\,s$$.
+- A **feedforward term based on the filtered rate reference** improves transient tracking.
+- Anti-windup is implemented using **conditional integrator update (`allow_integrator_update`)**, preventing integrator growth during actuator saturation.
+- Control design is aligned with the identified motor lag
 
+$$
+\tau \approx 0.17\,s
+$$
 
 ## 🔉 Signal Processing: 1D Kalman Filter  
 
