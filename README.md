@@ -170,8 +170,7 @@ $$
 To avoid abrupt changes in the commanded angular rate, the reference is rate-limited:
 
 $$
-\omega_{ref}(n) =
-\text{slew\_limit}\big(\omega_{ref}(n-1), \omega_{ref,raw}(n)\big)
+\omega_{ref}(n) = \text{slew\_limit}\big(\omega_{ref}(n-1), \omega_{ref,raw}(n)\big)
 $$
 
 This improves stability and prevents aggressive control actions caused by sudden stick inputs.
