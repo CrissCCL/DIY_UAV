@@ -158,7 +158,6 @@ Where:
 - **Feedforward** improves transient response
 - **Mixer** converts control actions into motor commands
 
----
 
 # 🟦 Outer Loop — Proportional Angle Controller
 
@@ -212,7 +211,6 @@ Where:
 
 The filtered reference $$\omega_{ref}^{f}(n)$$ is used by the inner loop controller.
 
----
 
 # 🟥 Inner Loop — Rate PID with Feedforward
 
@@ -476,7 +474,6 @@ $$
 K_p,\quad T_i,\quad T_d,\quad D_{ALPHA},\quad K_{ff}
 $$
 
----
 
 # 🔧 Motor Mixing Matrix (X Configuration)
 
@@ -539,7 +536,6 @@ motor_4 = clampf(PwR_prop + Uroll_cmd - Upitch_cmd + Uyaw_cmd, MOTOR_MIN, MOTOR_
 
 The outputs are then converted to PWM signals and sent to the ESCs.
 
----
 
 # ⏱ Real-Time Execution
 
@@ -549,7 +545,6 @@ The outputs are then converted to PWM signals and sent to the ESCs.
 - Telemetry via UART → Raspberry Pi 4B
 - Offline validation in MATLAB
 
----
 
 # 🧠 Design Summary
 
@@ -645,7 +640,6 @@ $$
 
 Where:
 - $$(Acc_X, Acc_Y, Acc_Z)$$ = accelerometer readings in each axis.  
-
 
 
 ## :triangular_ruler: Connection Diagram (update flight control stage)
