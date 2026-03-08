@@ -560,7 +560,7 @@ The outputs are then converted to PWM signals and sent to the ESCs.
 - Control design is aligned with the identified motor lag
 
 $$
-\tau \approx 0.17\,s
+\tau \approx 0.17 s
 $$
 
 ## 🔉 Signal Processing: 1D Kalman Filter  
