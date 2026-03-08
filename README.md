@@ -218,6 +218,44 @@ Where
 - $$FF$$ improves reference tracking
 - the mixer converts control torques into motor commands
 
+
+## Angular Rate Filtering
+
+Before entering the rate controller, the measured angular velocities are filtered to reduce vibration and high-frequency noise.
+
+The filtering chain implemented in the firmware is:
+
+$$
+\omega_f(n) = LPF\big(Notch(\omega(n))\big)
+$$
+
+Where
+
+- $$\omega(n)$$ is the raw gyroscope measurement  
+- $$Notch(\cdot)$$ removes narrow-band vibration components  
+- $$LPF(\cdot)$$ is a biquad low-pass filter used to attenuate high-frequency noise  
+- $$\omega_f(n)$$ is the filtered angular rate used by the controller
+
+This filtering stage improves controller robustness and prevents noise amplification in the derivative term.
+
+In the firmware implementation this corresponds to:
+
+```cpp
+float rr = RateRoll;
+float rp = RatePitch;
+float ry = RateYaw;
+
+if (USE_NOTCH) {
+    rr = notch_r.step(rr);
+    rp = notch_p.step(rp);
+    ry = notch_y.step(ry);
+}
+
+RateRoll_f  = lpf_r.step(rr);
+RatePitch_f = lpf_p.step(rp);
+RateYaw_f   = lpf_y.step(ry);
+```
+
 # 🟥 Inner Loop — Rate PID with Feedforward
 
 Rate error:
