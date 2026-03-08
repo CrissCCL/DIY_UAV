@@ -163,7 +163,7 @@ $$
 \text{clamp}\big(\omega_{ref,raw}(n), -\omega_{max}, \omega_{max}\big)
 $$
 
----
+
 
 ## Rate Target Slew Limiting
 
@@ -175,17 +175,13 @@ $$
 
 This improves stability and prevents aggressive control actions caused by sudden stick inputs.
 
----
 
 ## Target Rate Filtering
 
 The commanded rate is additionally smoothed using a first-order filter:
 
 $$
-\omega_{ref,f}(n) =
-\alpha_t\,\omega_{ref,f}(n-1)
-+
-(1-\alpha_t)\,\omega_{ref}(n)
+\omega_{ref}(n) =\alpha_t\,\omega_{ref}(n-1)+(1-\alpha_t)\,\omega_{ref}(n)
 $$
 
 Where:
