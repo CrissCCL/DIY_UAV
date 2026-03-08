@@ -140,9 +140,40 @@ The UAV implements a **cascaded digital control architecture** running at:
 | Inner | Roll, Pitch, Yaw     | Angular Velocity   |
 
 
-# 🟦 Outer Loop — Proportional Angle Controller (Angle → Rate)
+---
 
-The outer loop regulates the angular position (Roll and Pitch) and generates the reference angular rate for the inner loop.
+# Control Architecture Overview
+
+The flight controller follows a cascaded structure:
+
+$$
+\theta_{cmd}
+\rightarrow
+P_{angle}
+\rightarrow
+\omega_{ref}
+\rightarrow
+slew
+\rightarrow
+LPF
+\rightarrow
+PID_{rate} + FF
+\rightarrow
+Mixer
+\rightarrow
+Motors
+$$
+
+Where:
+
+- **Angle controller** generates a rate reference  
+- **Rate PID** stabilizes angular velocity  
+- **Feedforward** improves response  
+- **Mixer** converts control torques into motor commands
+
+# 🟦 Outer Loop — Proportional Angle Controller
+
+The outer loop converts the angular position error (Roll and Pitch) into a desired angular-rate reference for the inner loop.
 
 Angle error:
 
@@ -150,19 +181,18 @@ $$
 e_\theta(n) = \theta_{cmd}(n) - \theta(n)
 $$
 
-A **proportional controller** converts the angle error into a desired angular rate:
+A proportional controller generates the raw rate reference:
 
 $$
-\omega_{ref}^{raw}(n) = K_p\ e_\theta(n)
+\omega_{ref}^{raw}(n) = K_p e_\theta(n)
 $$
 
 The reference rate is limited to avoid excessive angular velocity:
 
 $$
 \omega_{ref}^{raw}(n) =
-\mathrm{clamp}\big(\omega_{ref}^{raw}(n), -\omega_{max}, \omega_{max}\big)
+\mathrm{clamp}\left(\omega_{ref}^{raw}(n), -\omega_{max}, \omega_{max}\right)
 $$
-
 
 ## Rate Target Slew Limiting
 
@@ -170,28 +200,28 @@ To avoid abrupt changes in the commanded angular rate, the reference is rate-lim
 
 $$
 \omega_{ref}(n) =
-\mathrm{slew\_limit}\big(\omega_{ref}(n-1), \omega_{ref}^{raw}(n)\big)
+\mathrm{slew\_limit}\left(\omega_{ref}(n-1), \omega_{ref}^{raw}(n)\right)
 $$
 
-This prevents sudden jumps in angular velocity caused by abrupt stick inputs.
+This prevents sudden jumps in angular velocity caused by aggressive stick inputs.
 
 ## Target Rate Filtering
 
-The rate reference is additionally smoothed using a first-order filter:
+The commanded rate is further smoothed using a first-order filter:
 
 $$
 \omega_{ref}^{f}(n) =
-\alpha_t\,\omega_{ref}^{f}(n-1)
+\alpha_t \cdot \omega_{ref}^{f}(n-1)
 +
-(1-\alpha_t)\,\omega_{ref}(n)
+(1-\alpha_t)\cdot \omega_{ref}(n)
 $$
 
-Where
+Where:
 
-- $$\omega_{ref}^{f}$$ is the **filtered angular rate reference**
-- $$\alpha_t$$ is the smoothing coefficient (`TARGET_ALPHA`)
+- $$\omega_{ref}^{f}(n)$$ is the filtered angular-rate reference
+- $$\alpha_t$$ is the target smoothing coefficient
 
-The filtered reference is used by the inner rate controller.
+The filtered reference $$\omega_{ref}^{f}(n)$$ is used by the inner loop controller.
 
 ## Control Architecture Diagram
 
@@ -202,6 +232,14 @@ $$
 \rightarrow
 P_{angle}
 \rightarrow
+\omega_{ref}^{raw}
+\rightarrow
+\mathrm{slew\_limit}
+\rightarrow
+\omega_{ref}
+\rightarrow
+LPF
+\rightarrow
 \omega_{ref}^{f}
 \rightarrow
 PID_{rate} + FF
@@ -211,29 +249,28 @@ Mixer
 Motors
 $$
 
-Where
+Where:
 
-- $$P_{angle}$$ generates the angular rate reference
+- $$P_{angle}$$ generates the angular-rate reference
 - $$PID_{rate}$$ stabilizes angular velocity
 - $$FF$$ improves reference tracking
-- the mixer converts control torques into motor commands
+- the mixer converts control actions into motor commands
 
-
-## Angular Rate Filtering
+# 🟥 Inner Loop — Rate PID with Feedforward
 
 Before entering the rate controller, the measured angular velocities are filtered to reduce vibration and high-frequency noise.
 
 The filtering chain implemented in the firmware is:
 
 $$
-\omega_f(n) = LPF\big(Notch(\omega(n))\big)
+\omega_f(n) = LPF(Notch(\omega(n)))
 $$
 
-Where
+Where:
 
-- $$\omega(n)$$ is the raw gyroscope measurement  
-- $$Notch(\cdot)$$ removes narrow-band vibration components  
-- $$LPF(\cdot)$$ is a biquad low-pass filter used to attenuate high-frequency noise  
+- $$\omega(n)$$ is the raw gyroscope measurement
+- $$Notch(\cdot)$$ removes narrow-band vibration components
+- $$LPF(\cdot)$$ is a biquad low-pass filter used to attenuate high-frequency noise
 - $$\omega_f(n)$$ is the filtered angular rate used by the controller
 
 This filtering stage improves controller robustness and prevents noise amplification in the derivative term.
@@ -255,8 +292,7 @@ RateRoll_f  = lpf_r.step(rr);
 RatePitch_f = lpf_p.step(rp);
 RateYaw_f   = lpf_y.step(ry);
 ```
-
-# 🟥 Inner Loop — Rate PID with Feedforward
+The inner loop regulates angular velocity (Roll, Pitch, Yaw) using a positional discrete-time PID structure.
 
 Rate error:
 
@@ -267,79 +303,55 @@ $$
 Control law:
 
 $$
-U(n) = K_p e(n) + I(n) + D_f(n) + FF(n)
+U(n) = P(n) + I(n) + D_f(n) + FF(n)
 $$
 
-Where
 
-- $$\omega_f$$ is the filtered angular rate
-- $$D_f$$ is the filtered derivative contribution
-
-
-## Feedforward Term
-
-A feedforward contribution improves the dynamic response:
+## Proportional Term
 
 $$
-FF(n) = K_{ff}\,\omega_{ref}^{f}(n)
+P(n) = K_p e(n)
 $$
 
-This anticipates the control effort required to track the commanded angular velocity.
 
----
-
-## Final Inner Loop Expression
-
-$$
-U(n) = K_p e(n) + I(n) + D_f(n) + FF(n)
-$$
-
-Applied independently to:
-
-- Roll rate
-- Pitch rate
-- Yaw rate
-
-Parameters per axis:
-
-$$
-K_p,\quad T_i,\quad T_d,\quad D_{ALPHA},\quad K_{ff}
-$$
-
-## 🔹 Integral Term + Conditional Anti-Windup
-
-The integral state is updated only when the saturation condition allows integration.  
-This prevents integrator windup while preserving integral action when useful.
-
-Discrete integral update:
+## Integral Term
 
 $$
 I(n) = I(n-1) + K_i T_s e(n)
 $$
 
-with:
+with
 
 $$
 K_i = \frac{K_p}{T_i}
 $$
 
-If the actuator is saturated and the update would worsen saturation, the integral action is frozen:
+
+## Conditional Anti-Windup
+
+If actuator saturation occurs and the integral update would worsen saturation, the integrator is frozen:
 
 $$
 I(n) = I(n-1)
 $$
 
-## 🔹 Derivative Term (Derivative on Measurement)
+This behaviour is implemented in firmware using:
 
-The derivative action is applied on the measured angular rate rather than on the control error, reducing derivative kick during abrupt reference changes.
+```cpp
+allow_integrator_update(...)
+```
+## Derivative Term (Derivative on Measurement)
 
-Let the discrete derivative of the measured rate be:
+The derivative action is applied to the measured angular rate, which reduces derivative kick during abrupt reference changes.
+
+The discrete derivative of the filtered rate is
 
 $$
-\dot{\omega}_f(n) \approx \frac{\omega_f(n) - \omega_f(n-1)}{T_s}
+\dot{\omega}_f(n) =
+\frac{\omega_f(n) - \omega_f(n-1)}{T_s}
 $$
 
-Then the raw derivative term is:
+The raw derivative term is
 
 $$
 D(n) = -K_p T_d \dot{\omega}_f(n)
@@ -347,59 +359,51 @@ $$
 
 The negative sign indicates **derivative on measurement**.
 
-## 🔹 D-Term First-Order Low-Pass Filter
 
-A first-order IIR low-pass filter is applied to the raw derivative term:
+## D-Term Filtering
+
+The derivative term is filtered using a first-order IIR low-pass filter:
 
 $$
-D_f(n) = \alpha D_f(n-1) + (1-\alpha)D(n)
+D_f(n) =
+\alpha \cdot D_f(n-1)
++
+(1-\alpha)\cdot D(n)
 $$
 
 Where:
 
-- $$D_f(n)$$ is the filtered derivative contribution
-- $$\alpha$$ corresponds to `D_ALPHA` in firmware
+- $$D_f(n)$$ is the filtered derivative contribution  
+- $$\alpha$$ corresponds to `D_ALPHA` in firmware  
 - $$0 < \alpha < 1$$
 
-### Embedded Implementation (Reference)
+
+Firmware implementation:
 
 ```cpp
-// D-term (negative because derivative on measurement)
 float Droll  = -(Kpr * Tdr) * dRateRoll;
 float Dpitch = -(Kpp * Tdp) * dRatePitch;
 float Dyaw   = -(Kpy * Tdy) * dRateYaw;
 
-// D low-pass filter
 Droll_f  = D_ALPHA * Droll_f  + (1.0f - D_ALPHA) * Droll;
 Dpitch_f = D_ALPHA * Dpitch_f + (1.0f - D_ALPHA) * Dpitch;
 Dyaw_f   = D_ALPHA * Dyaw_f   + (1.0f - D_ALPHA) * Dyaw;
 ```
-## 🔹 Feedforward Term
+## Feedforward Term
 
-A feedforward contribution is added from the **filtered target angular rate** to improve dynamic response and reduce tracking lag.
+A feedforward contribution improves the response to commanded angular velocity:
 
 $$
-FF(n) = K_{ff}\,\omega_{ref,f}(n)
+FF(n) = K_{ff} \cdot \omega_{ref}^{f}(n)
 $$
 
-This anticipates the control effort required to track the commanded angular rate and reduces the burden on the feedback controller.
+This term anticipates the control effort required to track the filtered rate reference.
 
-Feedforward is applied independently for **Roll, Pitch and Yaw**.
 
----
-
-## ✅ Final Inner Loop Expression
-
-The complete rate control law implemented in the firmware is:
+## Final Rate Controller
 
 $$
 U(n) = K_p e(n) + I(n) + D_f(n) + FF(n)
-$$
-
-Where
-
-$$
-e(n) = \omega_{ref,f}(n) - \omega_f(n)
 $$
 
 Applied independently to:
@@ -408,15 +412,30 @@ Applied independently to:
 - Pitch rate  
 - Yaw rate  
 
-Each axis has independently tuned parameters:
+
+Controller parameters per axis:
 
 $$
-K_p,\quad T_i,\quad T_d,\quad D\_ALPHA,\quad K_{ff}
+K_p,\quad T_i,\quad T_d,\quad D_{ALPHA},\quad K_{ff}
 $$
 
----
+
+
+# ⏱ Real-Time Execution
+
+- Control frequency: **200 Hz**
+- ESC PWM synchronized
+- Float arithmetic (Teensy 4.0 hardware FPU)
+- Telemetry via UART → Raspberry Pi 4B
+- Offline validation in MATLAB
 
 # 🔧 Motor Mixing Matrix (X Configuration)
+
+The control torques generated by the rate controller are converted into individual motor commands using an **X-configuration mixer**.
+
+The mixer combines collective thrust with roll, pitch and yaw control actions.
+
+Motor commands:
 
 $$
 M_1 = U_{PWR} - U_{Roll} - U_{Pitch} - U_{Yaw}
@@ -434,24 +453,44 @@ $$
 M_4 = U_{PWR} + U_{Roll} - U_{Pitch} + U_{Yaw}
 $$
 
-### Motor Layout
 
-- **M1:** Front Right  
-- **M4:** Front Left  
-- **M2:** Rear Right  
-- **M3:** Rear Left  
+Where
 
----
+- $$U_{PWR}$$ is the collective throttle command  
+- $$U_{Roll}$$ is the roll control action  
+- $$U_{Pitch}$$ is the pitch control action  
+- $$U_{Yaw}$$ is the yaw control action  
 
-# ⏱ Real-Time Execution
 
-- Control frequency: **200 Hz**
-- ESC PWM synchronized
-- Float arithmetic (Teensy 4.0 hardware FPU)
-- Telemetry via UART → Raspberry Pi 4B
-- Offline validation in MATLAB
+## Motor Layout
 
----
+The quadrotor follows the standard **X configuration**:
+
+| Motor | Position |
+|------|-----------|
+| M1 | Front Right |
+| M2 | Rear Right |
+| M3 | Rear Left |
+| M4 | Front Left |
+
+The mixer distributes the control effort such that:
+
+- **Roll control** generates opposite thrust between left and right motors  
+- **Pitch control** generates opposite thrust between front and rear motors  
+- **Yaw control** is generated through differential torque from the counter-rotating propellers
+
+
+## Firmware Implementation
+
+The mixer implemented in the firmware corresponds to:
+
+```cpp
+motor_1 = clampf(PwR_prop - Uroll_cmd - Upitch_cmd - Uyaw_cmd, MOTOR_MIN, MOTOR_MAX);
+motor_2 = clampf(PwR_prop - Uroll_cmd + Upitch_cmd + Uyaw_cmd, MOTOR_MIN, MOTOR_MAX);
+motor_3 = clampf(PwR_prop + Uroll_cmd + Upitch_cmd - Uyaw_cmd, MOTOR_MIN, MOTOR_MAX);
+motor_4 = clampf(PwR_prop + Uroll_cmd - Upitch_cmd + Uyaw_cmd, MOTOR_MIN, MOTOR_MAX);
+```
+The outputs are then converted to PWM signals and sent to the ESCs.
 
 # 🧠 Design Summary
 
