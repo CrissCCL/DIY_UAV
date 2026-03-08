@@ -163,7 +163,6 @@ $$
 \mathrm{clamp}\big(\omega_{ref}^{raw}(n), -\omega_{max}, \omega_{max}\big)
 $$
 
----
 
 ## Rate Target Slew Limiting
 
@@ -175,8 +174,6 @@ $$
 $$
 
 This prevents sudden jumps in angular velocity caused by abrupt stick inputs.
-
----
 
 ## Target Rate Filtering
 
@@ -195,8 +192,6 @@ Where
 - $$\alpha_t$$ is the smoothing coefficient (`TARGET_ALPHA`)
 
 The filtered reference is used by the inner rate controller.
-
----
 
 ## Control Architecture Diagram
 
@@ -223,8 +218,6 @@ Where
 - $$FF$$ improves reference tracking
 - the mixer converts control torques into motor commands
 
----
-
 # 🟥 Inner Loop — Rate PID with Feedforward
 
 Rate error:
@@ -244,7 +237,6 @@ Where
 - $$\omega_f$$ is the filtered angular rate
 - $$D_f$$ is the filtered derivative contribution
 
----
 
 ## Feedforward Term
 
