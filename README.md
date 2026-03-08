@@ -153,7 +153,7 @@ $$
 A **proportional controller** converts the angle error into a desired angular rate:
 
 $$
-\omega_{ref}^{raw}(n) = K_p\, e_\theta(n)
+\omega_{ref}^{raw}(n) = K_p\ e_\theta(n)
 $$
 
 The reference rate is limited to avoid excessive angular velocity:
