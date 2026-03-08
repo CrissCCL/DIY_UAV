@@ -153,90 +153,127 @@ $$
 A **proportional controller** converts the angle error into a desired angular rate:
 
 $$
-\omega_{ref,raw}(n) = K_p\, e_\theta(n)
+\omega_{ref}^{raw}(n) = K_p\, e_\theta(n)
 $$
 
 The reference rate is limited to avoid excessive angular velocity:
 
 $$
-\omega_{ref,raw}(n) =
-\text{clamp}\big(\omega_{ref,raw}(n), -\omega_{max}, \omega_{max}\big)
+\omega_{ref}^{raw}(n) =
+\mathrm{clamp}\big(\omega_{ref}^{raw}(n), -\omega_{max}, \omega_{max}\big)
 $$
 
-
+---
 
 ## Rate Target Slew Limiting
 
 To avoid abrupt changes in the commanded angular rate, the reference is rate-limited:
 
 $$
-\omega_{ref}(n) = \text{slew\_limit}\big(\omega_{ref}(n-1), \omega_{ref,raw}(n)\big)
+\omega_{ref}(n) =
+\mathrm{slew\_limit}\big(\omega_{ref}(n-1), \omega_{ref}^{raw}(n)\big)
 $$
 
-This improves stability and prevents aggressive control actions caused by sudden stick inputs.
-
-
-## Target Rate Filtering
-
-The commanded rate is additionally smoothed using a first-order filter:
-
-$$
-\omega_{ref}(n) =\alpha_t\,\omega_{ref}(n-1)+(1-\alpha_t)\,\omega_{ref}(n)
-$$
-
-Where:
-
-- $$\omega_{ref,f}$$ = filtered rate reference  
-- $$\alpha_t$$ = target smoothing coefficient (`TARGET_ALPHA`)
-
-The filtered reference is used by the inner loop controller.
+This prevents sudden jumps in angular velocity caused by abrupt stick inputs.
 
 ---
 
-## Final Rate Reference
+## Target Rate Filtering
 
-The signal delivered to the rate controller is therefore:
-
-$$
-\omega_{ref,f}(n)
-$$
-
-which represents a **smoothed and rate-limited angular velocity command** generated from the angle error.
-
-Characteristics:
-
-- Proportional angle controller
-- Rate saturation
-- Slew-limited rate command
-- First-order reference filtering
-
-
-# 🟥 Inner Loop — Positional PID with Derivative on Measurement, D-Term Filtering and Conditional Anti-Windup
-
-The inner loop regulates angular velocity (Roll, Pitch, Yaw) using a **positional discrete-time PID structure**.
-
-Before entering the controller, the measured angular rates are filtered using an optional **notch filter** followed by a **biquad low-pass filter**, improving robustness against vibration and high-frequency noise:
+The rate reference is additionally smoothed using a first-order filter:
 
 $$
-\omega_f(n) = LPF\big(Notch(\omega(n))\big)
+\omega_{ref}^{f}(n) =
+\alpha_t\,\omega_{ref}^{f}(n-1)
++
+(1-\alpha_t)\,\omega_{ref}(n)
 $$
 
-The rate control error is then computed as:
+Where
+
+- $$\omega_{ref}^{f}$$ is the **filtered angular rate reference**
+- $$\alpha_t$$ is the smoothing coefficient (`TARGET_ALPHA`)
+
+The filtered reference is used by the inner rate controller.
+
+---
+
+## Control Architecture Diagram
+
+The implemented flight controller follows a cascaded structure:
 
 $$
-e(n) = \omega_{ref}(n) - \omega_f(n)
+\theta_{cmd}
+\rightarrow
+P_{angle}
+\rightarrow
+\omega_{ref}^{f}
+\rightarrow
+PID_{rate} + FF
+\rightarrow
+Mixer
+\rightarrow
+Motors
 $$
 
-The control law is:
+Where
+
+- $$P_{angle}$$ generates the angular rate reference
+- $$PID_{rate}$$ stabilizes angular velocity
+- $$FF$$ improves reference tracking
+- the mixer converts control torques into motor commands
+
+---
+
+# 🟥 Inner Loop — Rate PID with Feedforward
+
+Rate error:
 
 $$
-U(n) = P(n) + I(n) + D_f(n) + FF(n)
+e(n) = \omega_{ref}^{f}(n) - \omega_f(n)
 $$
 
-Where:
+Control law:
 
 $$
-P(n) = K_p e(n)
+U(n) = K_p e(n) + I(n) + D_f(n) + FF(n)
+$$
+
+Where
+
+- $$\omega_f$$ is the filtered angular rate
+- $$D_f$$ is the filtered derivative contribution
+
+---
+
+## Feedforward Term
+
+A feedforward contribution improves the dynamic response:
+
+$$
+FF(n) = K_{ff}\,\omega_{ref}^{f}(n)
+$$
+
+This anticipates the control effort required to track the commanded angular velocity.
+
+---
+
+## Final Inner Loop Expression
+
+$$
+U(n) = K_p e(n) + I(n) + D_f(n) + FF(n)
+$$
+
+Applied independently to:
+
+- Roll rate
+- Pitch rate
+- Yaw rate
+
+Parameters per axis:
+
+$$
+K_p,\quad T_i,\quad T_d,\quad D_{ALPHA},\quad K_{ff}
 $$
 
 ## 🔹 Integral Term + Conditional Anti-Windup
