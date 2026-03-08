@@ -140,8 +140,6 @@ The UAV implements a **cascaded digital control architecture** running at:
 | Inner | Roll, Pitch, Yaw     | Angular Velocity   |
 
 
----
-
 # 🟦 Outer Loop — Incremental PI with Trapezoidal Integral (Angle → Rate)
 
 The outer loop regulates angular position (Roll, Pitch) and generates the reference for the inner (rate) loop.
@@ -175,7 +173,7 @@ $$
 Total increment:
 
 $$
-\Delta u(n) =K_p \big(e_\theta(n) - e_\theta(n-1)\big)+K_i \frac{T_s}{2}\big(e_\theta(n) + e_\theta(n-1)\big)
+\Delta u(n) = K_p \big(e_\theta(n) - e_\theta(n-1)\big) + K_i \frac{T_s}{2}\big(e_\theta(n) + e_\theta(n-1)\big)
 $$
 
 Update equation:
@@ -187,8 +185,9 @@ $$
 With $$K_i = \frac{K_p}{T_i}$$:
 
 $$
-u(n) = u(n-1) + K_p \big(e_\theta(n) - e_\theta(n-1)\big)+\frac{K_p}{T_i}\frac{T_s}{2}\big(e_\theta(n) + e_\theta(n-1)\big)
+u(n) = u(n-1) + K_p \big(e_\theta(n) - e_\theta(n-1)\big) + \frac{K_p}{T_i}\frac{T_s}{2}\big(e_\theta(n) + e_\theta(n-1)\big)
 $$
+
 In this project, $$u(n)$$ corresponds to the **rate reference**:
 
 $$
@@ -202,20 +201,28 @@ Characteristics:
 - Smooth rate reference generation
 - Independent tuning for Roll and Pitch
 
-# 🟥 Inner Loop — Positional PID (Derivative on Measurement + D Low-Pass Filter + Integral Freeze Anti-Windup)
+
+
+# 🟥 Inner Loop — Positional PID with Derivative on Measurement, D-Term Filtering and Conditional Anti-Windup
 
 The inner loop regulates angular velocity (Roll, Pitch, Yaw) using a **positional discrete-time PID structure**.
 
-Rate error:
+Before entering the controller, the measured angular rates are filtered using an optional **notch filter** followed by a **biquad low-pass filter**, improving robustness against vibration and high-frequency noise:
 
 $$
-e(n) = \omega_{ref}(n) - \omega(n)
+\omega_f(n) = LPF\big(Notch(\omega(n))\big)
 $$
 
-Control law:
+The rate control error is then computed as:
 
 $$
-U(n) = P(n) + I(n) + D_f(n)
+e(n) = \omega_{ref}(n) - \omega_f(n)
+$$
+
+The control law is:
+
+$$
+U(n) = P(n) + I(n) + D_f(n) + FF(n)
 $$
 
 Where:
@@ -224,48 +231,50 @@ $$
 P(n) = K_p e(n)
 $$
 
-## 🔹 Integral Term + Anti-Windup (Integral Freeze on Saturation)
+## 🔹 Integral Term + Conditional Anti-Windup
 
-The integral state is updated only when the actuator is **not saturated** (or when saturation conditions allow integration).  
-This avoids integrator windup without using a leak.
+The integral state is updated only when the saturation condition allows integration.  
+This prevents integrator windup while preserving integral action when useful.
 
-Discrete integral update (when allowed):
+Discrete integral update:
 
 $$
 I(n) = I(n-1) + K_i T_s e(n)
 $$
 
-If the controller output is saturated (anti-windup active), the integral is **frozen**:
+with:
+
+$$
+K_i = \frac{K_p}{T_i}
+$$
+
+If the actuator is saturated and the update would worsen saturation, the integral action is frozen:
 
 $$
 I(n) = I(n-1)
 $$
 
-## 🔹 Derivative Term (Derivative on Measurement, Negative Sign)
+## 🔹 Derivative Term (Derivative on Measurement)
 
-The derivative action is applied on the measured rate (not on the error), which reduces derivative kick.
+The derivative action is applied on the measured angular rate rather than on the control error, reducing derivative kick during abrupt reference changes.
 
-Let the discrete-time rate derivative be:
-
-$$
-\dot{\omega}(n) \approx \frac{\omega(n) - \omega(n-1)}{T_s}
-$$
-
-Then the raw D-term implemented per axis is:
+Let the discrete derivative of the measured rate be:
 
 $$
-D(n) = -K_p T_d \dot{\omega}(n)
+\dot{\omega}_f(n) \approx \frac{\omega_f(n) - \omega_f(n-1)}{T_s}
 $$
 
-This matches the firmware convention:
+Then the raw derivative term is:
 
-- `dRateRoll`, `dRatePitch`, `dRateYaw` represent the discrete derivative of the measured rates
-- The negative sign implements derivative on measurement
+$$
+D(n) = -K_p T_d \dot{\omega}_f(n)
+$$
 
+The negative sign indicates **derivative on measurement**.
 
-## 🔹 D-Term First-Order Low-Pass Filter (Implemented)
+## 🔹 D-Term First-Order Low-Pass Filter
 
-A first-order IIR low-pass filter is applied to the D-term:
+A first-order IIR low-pass filter is applied to the raw derivative term:
 
 $$
 D_f(n) = \alpha D_f(n-1) + (1-\alpha)D(n)
@@ -273,7 +282,7 @@ $$
 
 Where:
 
-- $$D_f(n)$$ is the filtered D-term
+- $$D_f(n)$$ is the filtered derivative contribution
 - $$\alpha$$ corresponds to `D_ALPHA` in firmware
 - $$0 < \alpha < 1$$
 
@@ -285,16 +294,27 @@ float Droll  = -(Kpr * Tdr) * dRateRoll;
 float Dpitch = -(Kpp * Tdp) * dRatePitch;
 float Dyaw   = -(Kpy * Tdy) * dRateYaw;
 
-// D low-pass filter (recommended)
+// D low-pass filter
 Droll_f  = D_ALPHA * Droll_f  + (1.0f - D_ALPHA) * Droll;
 Dpitch_f = D_ALPHA * Dpitch_f + (1.0f - D_ALPHA) * Dpitch;
 Dyaw_f   = D_ALPHA * Dyaw_f   + (1.0f - D_ALPHA) * Dyaw;
 ```
+## 🔹 Feedforward Term
+
+A feedforward contribution is added from the target angular rate to improve dynamic response and reduce tracking lag.
+
+$$
+FF(n) = K_{ff}\,\omega_{ref}(n)
+$$
+
+This term anticipates the required control effort based on the commanded angular rate and is applied independently for Roll, Pitch and Yaw.
 
 ## ✅ Final Inner Loop Expression
 
+The complete rate control law is:
+
 $$
-U(n) = K_p e(n) + I(n) + D_f(n)
+U(n) = K_p e(n) + I(n) + D_f(n) + FF(n)
 $$
 
 Applied independently to:
@@ -306,7 +326,7 @@ Applied independently to:
 Each axis has independently tuned parameters:
 
 $$
-K_p,\quad T_i \; \left(K_i = \frac{K_p}{T_i}\right),\quad T_d,\quad D\_ALPHA
+K_p,\quad T_i,\quad T_d,\quad D\_ALPHA,\quad K_{ff}
 $$
 
 # 🔧 Motor Mixing Matrix (X Configuration)
@@ -346,10 +366,13 @@ $$
 
 - Cascaded architecture improves disturbance rejection.
 - Outer loop incremental PI ensures smooth rate references.
-- Inner loop positional PID simplifies tuning and interpretability.
-- Integrator leak prevents ground bias accumulation.
-- Filtered derivative reduces noise amplification.
-- Control design aligned with identified motor lag \( \tau \approx 0.17\,s \).
+- Inner loop positional PID uses **derivative on measurement**.
+- The D-term includes a **first-order low-pass filter** to reduce noise amplification.
+- Angular-rate measurements are conditioned using **notch + biquad low-pass filtering**.
+- A **feedforward** term improves reference tracking and transient response.
+- Anti-windup is implemented through **conditional integral freezing under saturation**.
+- Control design is aligned with the identified motor lag $$\tau \approx 0.17\,s$$.
+
 
 ## 🔉 Signal Processing: 1D Kalman Filter  
 
