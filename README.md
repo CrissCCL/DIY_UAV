@@ -65,6 +65,21 @@ This module provides:
 - Rotational axis plant models (Gp, Gq, Gr)
 - Bandwidth constraints for rate loop tuning
 
+## 🔗 ROS 2 Field Tuning Integration
+
+This UAV project also includes a dedicated ROS 2 integration repository for **telemetry monitoring**, **runtime PID tuning**, and **remote field operation** during experimental tests.
+
+👉 **ROS 2 UAV PID Tuning Bridge**  
+🔗 https://github.com/CrissCCL/UAV_ControlTunning_ROS_integration
+
+This repository documents the use of a **Raspberry Pi** as a ROS 2 bridge communicating over **UART** with the **Teensy-based flight controller**, enabling remote operation from an **iPad via SSH** while both the iPad and the Raspberry Pi are connected to the **phone hotspot**.
+
+Main documented elements:
+- ROS 2 UART bridge for telemetry and PID parameter exchange
+- Runtime PID tuning without reflashing firmware
+- Remote SSH workflow from iPad
+- Architecture diagram and Raspberry Pi ↔ Teensy wiring schematic
+
 
 ## 📊 Project Status
 | Component                  | Status                     |
