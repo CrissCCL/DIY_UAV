@@ -92,7 +92,7 @@ Main documented elements:
 | PCB Design with Improved structure and connections  | ✅ Completed            |
 | Pitch, Roll & Yaw Angular Velocity Control| ⚙️ In Progress          |
 | Pitch & Roll Stabilization  | ⚙️ In Progress             |
-| Prototype Flight Testing    | ⚠️ Not Started             |
+| Prototype Flight Testing    | ⚙️ In Progress           |
 
 
 
