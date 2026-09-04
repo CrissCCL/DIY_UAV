@@ -105,6 +105,7 @@ Main documented elements:
 
 📺 [Upgrade Power Stage](https://youtube.com/shorts/vSKApaUKDLE?feature=share)
 
+📺 [Test 4](https://youtube.com/shorts/U_MGjDNxiak?feature=share)
 
 ## ⚙️ System Description
 
